@@ -1,0 +1,4400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ÉCO-VALLÉE // ÉNERGIE NATURELLE — Gestion d'Énergie Renouvelable</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* =========================================================================
+       ÉCO-VALLÉE // ÉNERGIE NATURELLE — THÈME BOIS, ARDOISE FORÊT & PARCHEMIN
+       (100 % NATUREL — STRICTEMENT ZÉRO NÉON)
+       ========================================================================= */
+    :root {
+      --forest-deep: #1b2b21;
+      --slate-panel: rgba(31, 46, 36, 0.93);
+      --wood-dark: #4a3525;
+      --wood-mid: #6d4f37;
+      --wood-light: #9c7653;
+      --parchment: #f5eedc;
+      --parchment-soft: #e6dac0;
+      --cream-text: #faf6eb;
+      --muted-text: #c2cdb9;
+      --moss: #6ca853;
+      --moss-dark: #437035;
+      --gold-sun: #e5b248;
+      --river-blue: #4a96c7;
+      --terracotta: #cc5943;
+      --amber-warm: #d98736;
+      --font-display: 'Fredoka', 'Segoe UI', sans-serif;
+      --font-body: 'Nunito', 'Segoe UI', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #233a24;
+      color: var(--cream-text);
+      font-family: var(--font-body);
+      touch-action: none;
+    }
+
+    #gameCanvas {
+      display: block;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #2b4a2b;
+      cursor: pointer;
+    }
+
+    /* =========================================================================
+       PANNEAUX BOISÉS & BOUTONS NATURELS
+       ========================================================================= */
+    .wood-panel {
+      background: var(--slate-panel);
+      border: 2px solid var(--wood-mid);
+      border-radius: 14px;
+      box-shadow:
+        0 6px 18px rgba(15, 24, 17, 0.45),
+        inset 0 1px 0 rgba(245, 238, 220, 0.14);
+    }
+
+    .eco-btn {
+      font-family: var(--font-display);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--cream-text);
+      background: linear-gradient(180deg, #5c432f 0%, #443020 100%);
+      border: 2px solid var(--wood-light);
+      border-radius: 11px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 3px 0 #2d1f14, 0 4px 10px rgba(0, 0, 0, 0.28);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .eco-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      background: linear-gradient(180deg, #6d5039 0%, #523b28 100%);
+      border-color: #c7a27c;
+      color: #ffffff;
+    }
+
+    .eco-btn:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #2d1f14;
+    }
+
+    .eco-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .eco-btn.leaf {
+      background: linear-gradient(180deg, #5d9448 0%, #416e32 100%);
+      border-color: #93c47a;
+      box-shadow: 0 3px 0 #2b4a20, 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+    .eco-btn.leaf:hover:not(:disabled) {
+      background: linear-gradient(180deg, #6ca855 0%, #4d7f3c 100%);
+    }
+
+    .eco-btn.river {
+      background: linear-gradient(180deg, #4b8fb8 0%, #336b8e 100%);
+      border-color: #8cc2e0;
+      box-shadow: 0 3px 0 #214961, 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+    .eco-btn.river:hover:not(:disabled) {
+      background: linear-gradient(180deg, #5aa0ca 0%, #3d7aa0 100%);
+    }
+
+    .eco-btn.sun {
+      background: linear-gradient(180deg, #d19938 0%, #a87522 100%);
+      border-color: #f0ca75;
+      box-shadow: 0 3px 0 #6e4b12, 0 4px 10px rgba(0, 0, 0, 0.25);
+      color: #fffdf5;
+    }
+    .eco-btn.sun:hover:not(:disabled) {
+      background: linear-gradient(180deg, #e0a744 0%, #ba8329 100%);
+    }
+
+    .eco-btn.clay {
+      background: linear-gradient(180deg, #c25540 0%, #993d2c 100%);
+      border-color: #e69381;
+      box-shadow: 0 3px 0 #632418, 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+    .eco-btn.clay:hover:not(:disabled) {
+      background: linear-gradient(180deg, #d1624d 0%, #aa4735 100%);
+    }
+
+    .eco-btn.active {
+      background: linear-gradient(180deg, #5d9448 0%, #3f6b30 100%);
+      border-color: #b5de9e;
+    }
+
+    /* =========================================================================
+       BARRE HUD SUPÉRIEURE
+       ========================================================================= */
+    #hudTop {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 12px;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    #hudTop.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-20px);
+    }
+
+    .hud-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hud-stat {
+      display: flex;
+      flex-direction: column;
+      padding: 5px 10px;
+      border-radius: 10px;
+      background: rgba(20, 32, 24, 0.72);
+      border: 1px solid rgba(156, 118, 83, 0.45);
+      min-width: 102px;
+    }
+
+    .hud-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: var(--muted-text);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .hud-val {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cream-text);
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .hud-sub {
+      font-size: 11px;
+      font-weight: 700;
+      color: #a8dc8e;
+    }
+
+    .mini-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 3px;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      width: 50%;
+      border-radius: 99px;
+      transition: width 0.2s linear, background-color 0.2s ease;
+    }
+
+    .badge-night {
+      display: none;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-size: 9px;
+      font-family: var(--font-display);
+      background: #364e78;
+      border: 1px solid #8eb1e0;
+      color: #eef5ff;
+    }
+    .badge-night.show {
+      display: inline-block;
+    }
+
+    .hud-icon-btn {
+      padding: 7px 10px;
+      min-width: 38px;
+      font-size: 13px;
+    }
+
+    /* =========================================================================
+       BANNIÈRE D'ALERTE DOUCE (TOASTS)
+       ========================================================================= */
+    #alertBanner {
+      position: fixed;
+      top: 88px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-14px);
+      z-index: 25;
+      padding: 9px 20px;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-size: 13px;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      background: var(--parchment);
+      border: 2px solid var(--wood-mid);
+      color: #2c2015;
+      box-shadow: 0 6px 18px rgba(15, 22, 16, 0.35);
+      max-width: 92vw;
+    }
+
+    #alertBanner.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #alertBanner.alert-leaf {
+      background: #e6f4dc;
+      border-color: var(--moss-dark);
+      color: #214018;
+    }
+
+    #alertBanner.alert-sun {
+      background: #fdf2d6;
+      border-color: #b5822a;
+      color: #4f3509;
+    }
+
+    #alertBanner.alert-clay {
+      background: #fce4de;
+      border-color: var(--terracotta);
+      color: #691f13;
+    }
+
+    /* =========================================================================
+       PANNEAU INSPECTEUR LATÉRAL (GAUCHE)
+       ========================================================================= */
+    #inspectorPanel {
+      position: fixed;
+      left: 12px;
+      top: 96px;
+      width: 274px;
+      max-width: calc(100vw - 24px);
+      z-index: 22;
+      padding: 14px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #inspectorPanel.open {
+      display: flex;
+      animation: slideInLeft 0.18s ease-out;
+    }
+
+    .insp-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(156, 118, 83, 0.45);
+      padding-bottom: 10px;
+    }
+
+    #inspPreviewCanvas {
+      width: 56px;
+      height: 56px;
+      image-rendering: pixelated;
+      background: #d8e5c7;
+      border: 2px solid var(--wood-light);
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .insp-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--parchment);
+      margin: 0;
+    }
+
+    .insp-badge {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-family: var(--font-display);
+      background: rgba(108, 168, 83, 0.25);
+      border: 1px solid var(--moss);
+      color: #d6f5c6;
+    }
+
+    .insp-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 12px;
+    }
+
+    .insp-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: rgba(20, 32, 24, 0.55);
+    }
+
+    .insp-row span:first-child {
+      color: var(--muted-text);
+    }
+
+    .insp-row span:last-child {
+      font-family: var(--font-display);
+      font-size: 12px;
+      color: var(--cream-text);
+    }
+
+    .insp-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 2px;
+    }
+
+    .insp-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: transparent;
+      border: none;
+      color: var(--muted-text);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 2px 7px;
+      border-radius: 8px;
+    }
+    .insp-close:hover {
+      color: var(--parchment);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* =========================================================================
+       BARRE DE CONSTRUCTION EN BAS (DOCK)
+       ========================================================================= */
+    #buildDockWrap {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      max-width: calc(100vw - 196px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    #buildDockWrap.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(24px);
+    }
+
+    .dock-hint-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 92vw;
+    }
+
+    #toolHintBar {
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #2f2317;
+      background: rgba(245, 238, 220, 0.94);
+      border: 2px solid var(--wood-mid);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 72vw;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    #btnAutoLink {
+      padding: 4px 10px;
+      font-size: 11px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    #buildDock {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+      padding: 7px;
+      overflow-x: auto;
+      max-width: 100%;
+      scrollbar-width: none;
+    }
+    #buildDock::-webkit-scrollbar {
+      display: none;
+    }
+
+    .dock-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 80px;
+      padding: 7px 5px 6px;
+      border-radius: 10px;
+      background: rgba(22, 35, 26, 0.85);
+      border: 2px solid rgba(156, 118, 83, 0.45);
+      cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+      color: var(--cream-text);
+    }
+
+    .dock-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold-sun);
+      background: rgba(45, 68, 49, 0.95);
+    }
+
+    .dock-item.selected {
+      transform: translateY(-4px);
+      border-color: var(--gold-sun);
+      background: linear-gradient(180deg, #4b733e 0%, #2d4a26 100%);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .dock-item.dock-sell.selected {
+      border-color: #f0a18e;
+      background: linear-gradient(180deg, #a6412f 0%, #75291c 100%);
+    }
+
+    .dock-item.dock-cable.selected {
+      border-color: #f2cf7e;
+      background: linear-gradient(180deg, #8c6432 0%, #5e411d 100%);
+    }
+
+    .dock-key {
+      position: absolute;
+      top: 4px;
+      left: 5px;
+      font-family: var(--font-display);
+      font-size: 9px;
+      color: #2f2317;
+      background: var(--parchment);
+      border: 1px solid var(--wood-mid);
+      border-radius: 5px;
+      padding: 0 4px;
+    }
+
+    .dock-icon {
+      width: 34px;
+      height: 34px;
+      image-rendering: pixelated;
+      margin-top: 4px;
+      margin-bottom: 3px;
+    }
+
+    .dock-name {
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .dock-cost {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--gold-sun);
+      margin-top: 2px;
+    }
+
+    .dock-meta {
+      font-size: 9px;
+      color: var(--muted-text);
+      white-space: nowrap;
+    }
+
+    /* =========================================================================
+       MINIMAP & CONTRÔLES CAMÉRA (BAS DROITE)
+       ========================================================================= */
+    #minimapBox {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 20;
+      padding: 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    #minimapBox.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+    }
+
+    .minimap-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-display);
+      font-size: 10px;
+      color: var(--parchment);
+      letter-spacing: 0.04em;
+    }
+
+    #minimapCanvas {
+      width: 158px;
+      height: 102px;
+      border-radius: 8px;
+      border: 2px solid var(--wood-mid);
+      background: #2f542c;
+      cursor: pointer;
+      display: block;
+    }
+
+    .cam-mini-btns {
+      display: flex;
+      gap: 4px;
+      justify-content: space-between;
+    }
+
+    .cam-mini-btns .eco-btn {
+      padding: 4px 6px;
+      font-size: 11px;
+      flex: 1;
+      border-radius: 8px;
+    }
+
+    /* =========================================================================
+       ÉCRANS OVERLAY (MENU PRINCIPAL, PAUSE, AIDE, VICTOIRE, BLACKOUT)
+       ========================================================================= */
+    .overlay-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(20, 32, 23, 0.56);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      overflow-y: auto;
+    }
+
+    .overlay-screen.open {
+      display: flex;
+      animation: fadeIn 0.22s ease-out;
+    }
+
+    .menu-card {
+      width: 100%;
+      max-width: 860px;
+      padding: 26px 24px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(34, 51, 39, 0.96) 0%, rgba(25, 38, 29, 0.97) 100%);
+      border: 3px solid var(--wood-light);
+      box-shadow:
+        0 18px 46px rgba(10, 18, 12, 0.58),
+        inset 0 2px 0 rgba(245, 238, 220, 0.18);
+      text-align: center;
+      position: relative;
+    }
+
+    .menu-card.compact {
+      max-width: 490px;
+    }
+
+    .game-title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 4.6vw, 42px);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin: 0 0 6px;
+      color: var(--parchment);
+      text-shadow: 0 3px 0 #261b12;
+    }
+
+    .game-title span {
+      color: var(--gold-sun);
+    }
+
+    .menu-subtitle {
+      font-size: 14px;
+      font-weight: 700;
+      color: #b7d6a5;
+      margin: 0 0 22px;
+    }
+
+    .valley-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .valley-card {
+      background: var(--parchment);
+      color: #2b2117;
+      border: 2px solid var(--wood-mid);
+      border-radius: 14px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      box-shadow: 0 5px 0 #3d2c1e, 0 8px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .valley-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold-sun);
+      box-shadow: 0 8px 0 #3d2c1e, 0 12px 24px rgba(0, 0, 0, 0.32);
+    }
+
+    .valley-tag {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #e6d5af;
+      color: #5c3d16;
+      margin-bottom: 4px;
+    }
+
+    .valley-tag.river-tag {
+      background: #d3e7f5;
+      color: #1f5375;
+    }
+
+    .valley-tag.leaf-tag {
+      background: #d7ecd0;
+      color: #26541e;
+    }
+
+    .valley-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      color: #2a1f15;
+      margin: 2px 0 4px;
+    }
+
+    .valley-desc {
+      font-size: 12.5px;
+      color: #524436;
+      line-height: 1.42;
+      margin: 0;
+    }
+
+    .valley-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+      padding-top: 8px;
+      border-top: 1px dashed #bfa986;
+      color: #3a2d20;
+    }
+
+    .help-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      text-align: left;
+      margin: 16px 0 20px;
+    }
+
+    .help-box {
+      background: var(--parchment);
+      color: #2b2117;
+      border: 2px solid var(--wood-mid);
+      border-radius: 13px;
+      padding: 14px;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .help-box h3 {
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: #3a5c2d;
+      margin: 0 0 8px;
+    }
+
+    .help-box ul {
+      margin: 0;
+      padding-left: 17px;
+    }
+
+    .help-box li {
+      margin-bottom: 5px;
+    }
+
+    .kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 5px;
+      background: #3d2c1e;
+      color: var(--parchment);
+      font-family: var(--font-display);
+      font-size: 10px;
+    }
+
+    .modal-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .summary-stat {
+      padding: 10px;
+      border-radius: 11px;
+      background: var(--parchment);
+      border: 2px solid var(--wood-mid);
+      color: #2b2117;
+    }
+
+    .summary-stat .s-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: #6b5844;
+      text-transform: uppercase;
+    }
+
+    .summary-stat .s-val {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: #325926;
+      margin-top: 3px;
+    }
+
+    /* =========================================================================
+       ANIMATIONS & RESPONSIVE
+       ========================================================================= */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-16px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @media (max-width: 980px) {
+      .valley-grid {
+        grid-template-columns: 1fr;
+      }
+      .help-grid {
+        grid-template-columns: 1fr;
+      }
+      #buildDockWrap {
+        max-width: calc(100vw - 16px);
+        bottom: 8px;
+      }
+      #minimapBox {
+        bottom: 126px;
+        right: 8px;
+      }
+      #minimapCanvas {
+        width: 122px;
+        height: 78px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #hudTop {
+        padding: 6px 8px;
+        gap: 5px;
+      }
+      .hud-stat {
+        min-width: 76px;
+        padding: 4px 6px;
+      }
+      .hud-val {
+        font-size: 12px;
+      }
+      .dock-item {
+        min-width: 66px;
+        padding: 5px 4px;
+      }
+      .dock-icon {
+        width: 28px;
+        height: 28px;
+      }
+      #minimapBox {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- CANEVAS PRINCIPAL PLEIN ÉCRAN -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- BARRE HUD SUPÉRIEURE -->
+  <header id="hudTop" class="wood-panel hidden">
+    <div class="hud-group">
+      <!-- Crédits -->
+      <div class="hud-stat">
+        <div class="hud-label">
+          <span>CRÉDITS</span>
+          <span id="hudGoalTag" style="color: var(--gold-sun);">OBJ 5 000 €</span>
+        </div>
+        <div class="hud-val" id="hudCredits" style="color: var(--gold-sun);">1 200 €</div>
+        <div class="hud-sub" id="hudIncome">+0 €/s</div>
+      </div>
+
+      <!-- Production / Demande / Solde net -->
+      <div class="hud-stat">
+        <div class="hud-label">
+          <span>PROD / DEM</span>
+          <span id="hudNet" style="color: #9be082;">+0 kW</span>
+        </div>
+        <div class="hud-val" id="hudPower">0 / 0 kW</div>
+        <div class="mini-bar"><div id="barPower" class="mini-bar-fill" style="background: #7bc25d;"></div></div>
+      </div>
+
+      <!-- Batteries -->
+      <div class="hud-stat">
+        <div class="hud-label">
+          <span>BATTERIES</span>
+          <span id="hudBatPct" style="color: #8cc9e8;">0%</span>
+        </div>
+        <div class="hud-val" id="hudBattery" style="color: #d6eefc;">0 / 0 kWh</div>
+        <div class="mini-bar"><div id="barBattery" class="mini-bar-fill" style="background: var(--river-blue);"></div></div>
+      </div>
+
+      <!-- Stabilité -->
+      <div class="hud-stat">
+        <div class="hud-label">
+          <span>STABILITÉ</span>
+          <span id="hudStabilityState" style="color: #9be082;">STABLE</span>
+        </div>
+        <div class="hud-val" id="hudStability">100%</div>
+        <div class="mini-bar"><div id="barStability" class="mini-bar-fill" style="background: var(--moss); width: 100%;"></div></div>
+      </div>
+
+      <!-- Jour / Heure / Météo -->
+      <div class="hud-stat">
+        <div class="hud-label">
+          <span id="hudDayClock">JOUR 1 — 08:00</span>
+          <span id="badgeNight" class="badge-night">NUIT</span>
+        </div>
+        <div class="hud-val" id="hudWeather" style="font-size: 12px; color: var(--parchment);">☀ 85% &nbsp;|&nbsp; ≋ 100%</div>
+        <div class="hud-sub" id="hudWeatherText" style="color: #e6d49f; font-size: 10.5px;">Grand Soleil</div>
+      </div>
+    </div>
+
+    <!-- Contrôles rapides -->
+    <div class="hud-group" style="gap: 6px;">
+      <button id="btnSpeed" class="eco-btn hud-icon-btn sun" title="Changer la vitesse (Espace)">x1</button>
+      <button id="btnSound" class="eco-btn hud-icon-btn active" title="Activer / Couper le son">🔊</button>
+      <button id="btnHelpHud" class="eco-btn hud-icon-btn river" title="Aide &amp; Commandes">?</button>
+      <button id="btnPause" class="eco-btn hud-icon-btn" title="Menu Pause (Échap)">☰</button>
+    </div>
+  </header>
+
+  <!-- BANNIÈRE D'ALERTE -->
+  <div id="alertBanner">INFO VALLÉE</div>
+
+  <!-- PANNEAU INSPECTEUR LATÉRAL -->
+  <aside id="inspectorPanel" class="wood-panel">
+    <button class="insp-close" id="btnCloseInspector" title="Fermer">×</button>
+    <div class="insp-header">
+      <canvas id="inspPreviewCanvas" width="16" height="16"></canvas>
+      <div>
+        <h3 class="insp-title" id="inspName">Panneau Solaire</h3>
+        <div style="font-size: 11px; color: var(--gold-sun); font-weight: 700; margin-top: 2px;" id="inspLevel">NIVEAU 1 / 3</div>
+        <span class="insp-badge" id="inspStatus">ACTIF</span>
+      </div>
+    </div>
+    <div class="insp-rows" id="inspStats"></div>
+    <div class="insp-actions" id="inspActions"></div>
+  </aside>
+
+  <!-- DOCK DE CONSTRUCTION EN BAS -->
+  <div id="buildDockWrap" class="hidden">
+    <div class="dock-hint-row">
+      <div id="toolHintBar">Outil actif : Inspecter — Cliquez sur un bâtiment pour l'examiner ou l'améliorer [1–9]</div>
+      <button id="btnAutoLink" class="eco-btn leaf" title="Relier automatiquement les nouveaux bâtiments proches (≤ 2,5 cases)">Auto-câble : OUI</button>
+    </div>
+    <nav id="buildDock" class="wood-panel"></nav>
+  </div>
+
+  <!-- MINIMAP CLIQUABLE (BAS DROITE) -->
+  <div id="minimapBox" class="wood-panel hidden">
+    <div class="minimap-head">
+      <span>CARTE VALLÉE</span>
+      <span id="minimapMapTag" style="color: var(--gold-sun);">V-01</span>
+    </div>
+    <canvas id="minimapCanvas" width="158" height="102"></canvas>
+    <div class="cam-mini-btns">
+      <button id="btnRotateTool" class="eco-btn" title="Pivoter l'aperçu (Touche R)">↻ R</button>
+      <button id="btnZoomOut" class="eco-btn" title="Dézoomer">−</button>
+      <button id="btnZoomIn" class="eco-btn" title="Zoomer">+</button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MENU PRINCIPAL (SUR LA VALLÉE VIVANTE EN ARRIÈRE-PLAN)
+       ========================================================================= -->
+  <section id="mainMenuOverlay" class="overlay-screen open">
+    <div class="menu-card">
+      <h1 class="game-title">ÉCO-VALLÉE <span>//</span> ÉNERGIE NATURELLE</h1>
+      <p class="menu-subtitle">Gestion d'Énergies Renouvelables en Pixel-Art — Vue du Dessus</p>
+
+      <div class="valley-grid">
+        <!-- Carte 1 -->
+        <div class="valley-card" data-preset="0">
+          <div>
+            <span class="valley-tag">CARTE 01</span>
+            <div class="valley-name">Vallée Solaire</div>
+            <p class="valley-desc">Une vallée paisible bordée de forêts, traversée par une rivière claire et riche en clairières ensoleillées. Idéale pour démarrer.</p>
+          </div>
+          <div class="valley-meta">
+            <span>🌿 Taille : <b>24 × 16</b> cases</span>
+            <span>🪙 Budget : <b>1 200 €</b></span>
+            <span>🎯 Objectif : <b>5 000 €</b></span>
+          </div>
+          <button class="eco-btn leaf" style="width: 100%;">JOUER — VALLÉE SOLAIRE</button>
+        </div>
+
+        <!-- Carte 2 -->
+        <div class="valley-card" data-preset="1">
+          <div>
+            <span class="valley-tag river-tag">CARTE 02</span>
+            <div class="valley-name">Rivière &amp; Collines</div>
+            <p class="valley-desc">Grand territoire vallonné avec rivière sinueuse, ponts en bois, crêtes venteuses et plusieurs fermes et serres à raccorder.</p>
+          </div>
+          <div class="valley-meta">
+            <span>🌿 Taille : <b>28 × 18</b> cases</span>
+            <span>🪙 Budget : <b>1 500 €</b></span>
+            <span>🎯 Objectif : <b>9 000 €</b></span>
+          </div>
+          <button class="eco-btn river" style="width: 100%;">JOUER — RIVIÈRE &amp; COLLINES</button>
+        </div>
+
+        <!-- Carte 3 -->
+        <div class="valley-card" data-preset="2">
+          <div>
+            <span class="valley-tag leaf-tag">SANDBOX</span>
+            <div class="valley-name">Campagne Libre</div>
+            <p class="valley-desc">Mode bac à sable sans objectif imposé ni blackout : aménagez votre réseau d'énergies propres à votre rythme en toute sérénité.</p>
+          </div>
+          <div class="valley-meta">
+            <span>🌿 Taille : <b>26 × 16</b> cases</span>
+            <span>🪙 Budget : <b>50 000 €</b></span>
+            <span>🎯 Objectif : <b>Construction libre</b></span>
+          </div>
+          <button class="eco-btn sun" style="width: 100%;">LANCER CAMPAGNE LIBRE</button>
+        </div>
+      </div>
+
+      <div class="modal-btn-row">
+        <button id="btnOpenHelpMain" class="eco-btn">📖 AIDE &amp; COMMANDES</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MODALE AIDE & COMMANDES
+       ========================================================================= -->
+  <section id="helpOverlay" class="overlay-screen">
+    <div class="menu-card" style="max-width: 780px;">
+      <h2 class="game-title" style="font-size: 28px;">AIDE <span>&amp;</span> COMMANDES</h2>
+      <p class="menu-subtitle" style="margin-bottom: 12px;">Guide du gestionnaire de réseau écologique</p>
+
+      <div class="help-grid">
+        <div class="help-box">
+          <h3>🧭 Commandes Clavier &amp; Souris</h3>
+          <ul>
+            <li><span class="kbd">ZQSD</span> / <span class="kbd">WASD</span> / <span class="kbd">Flèches</span> ou <b>Clic droit glissé</b> : Déplacer la caméra.</li>
+            <li><b>Molette</b> (ou boutons <span class="kbd">+</span> / <span class="kbd">−</span>) : Zoomer / Dézoomer.</li>
+            <li><span class="kbd">1</span> à <span class="kbd">6</span> : Sélectionner un bâtiment producteur ou relais.</li>
+            <li><span class="kbd">7</span> ou <span class="kbd">C</span> : Câble électrique &nbsp;|&nbsp; <span class="kbd">8</span> ou <span class="kbd">X</span> : Vendre &nbsp;|&nbsp; <span class="kbd">9</span> : Inspecter.</li>
+            <li><span class="kbd">R</span> : Pivoter l'aperçu avant pose &nbsp;|&nbsp; <span class="kbd">Espace</span> : Vitesse (x1/x2/x3).</li>
+            <li><b>Clic droit bref</b> : Annuler le câble ou revenir à Inspecter &nbsp;|&nbsp; <span class="kbd">Échap</span> : Pause.</li>
+          </ul>
+        </div>
+        <div class="help-box">
+          <h3>🌿 Énergie Renouvelable &amp; Terrain</h3>
+          <ul>
+            <li><b>Clairières dorées (+35 %)</b> : Idéales pour les <b>Panneaux Solaires</b> (produisent le jour).</li>
+            <li><b>Collines venteuses (+35 %)</b> : Boostent les <b>Éoliennes</b> (produisent jour et nuit selon le vent).</li>
+            <li><b>Rivière bleue</b> : Posez vos <b>Turbines Hydrauliques</b> directement dans l'eau pour <b>42 kW constants</b> 24h/24 !</li>
+            <li><b>Cycle Jour / Nuit</b> : La nuit, le solaire s'arrête. Utilisez des <b>Batteries</b>, l'hydraulique, l'éolien ou la <b>Centrale Biomasse</b>.</li>
+            <li><b>Pylônes en bois</b> : Permettent aux câbles de franchir rivières et chemins (portée 6,2 cases).</li>
+            <li><b>Améliorations</b> : Inspectez vos installations pour les monter <b>Niveau 1 → 3</b> !</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="modal-btn-row">
+        <button id="btnCloseHelp" class="eco-btn leaf">COMPRIS — RETOUR</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MENU PAUSE
+       ========================================================================= -->
+  <section id="pauseOverlay" class="overlay-screen">
+    <div class="menu-card compact">
+      <h2 class="game-title" style="font-size: 30px;">PAUSE</h2>
+      <p class="menu-subtitle" id="pauseMapName">Vallée Solaire</p>
+      <div class="modal-btn-row" style="flex-direction: column; max-width: 280px; margin: 0 auto;">
+        <button id="btnResume" class="eco-btn leaf" style="width: 100%;">▶ REPRENDRE LA PARTIE</button>
+        <button id="btnRestartPause" class="eco-btn sun" style="width: 100%;">↻ RECOMMENCER LA CARTE</button>
+        <button id="btnHelpPause" class="eco-btn river" style="width: 100%;">📖 AIDE &amp; COMMANDES</button>
+        <button id="btnBackMainPause" class="eco-btn" style="width: 100%;">⌂ MENU PRINCIPAL</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       ÉCRAN VICTOIRE
+       ========================================================================= -->
+  <section id="victoryOverlay" class="overlay-screen">
+    <div class="menu-card compact">
+      <h2 class="game-title" style="font-size: 30px;">VALLÉE <span>ALIMENTÉE !</span></h2>
+      <p class="menu-subtitle" style="color: #b7e8a2;">Objectif atteint grâce à une énergie 100 % propre et durable</p>
+      <div class="summary-stats" id="victoryStats"></div>
+      <div class="modal-btn-row">
+        <button id="btnContinueEndless" class="eco-btn leaf">∞ CONTINUER EN INFINI</button>
+        <button id="btnVictoryMenu" class="eco-btn">⌂ MENU PRINCIPAL</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       ÉCRAN BLACKOUT (DÉFAITE)
+       ========================================================================= -->
+  <section id="gameoverOverlay" class="overlay-screen">
+    <div class="menu-card compact">
+      <h2 class="game-title" style="font-size: 30px; color: #f5b3a6;">BLACKOUT <span>GÉNÉRAL</span></h2>
+      <p class="menu-subtitle" style="color: #f0c2b9;">La stabilité du réseau est tombée à 0 %. Essayez d'ajouter des batteries ou de l'hydraulique !</p>
+      <div class="summary-stats" id="gameoverStats"></div>
+      <div class="modal-btn-row">
+        <button id="btnReplayGameover" class="eco-btn clay">↻ REJOUER LA CARTE</button>
+        <button id="btnGameoverMenu" class="eco-btn">⌂ MENU PRINCIPAL</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    /* =========================================================================
+       ÉCO-VALLÉE // ÉNERGIE NATURELLE — MOTEUR COMPLET, PIXEL ART & BFS
+       ========================================================================= */
+    (() => {
+      'use strict';
+
+      // -----------------------------------------------------------------------
+      // 1. CONSTANTES, SPÉCIFICATIONS & CARTES
+      // -----------------------------------------------------------------------
+      const TILE_SIZE = 48;               // 16x16 pixel art affiché en 3x net
+      const DAY_DURATION_SEC = 96;        // 1 journée = 96 s en vitesse x1
+      const HOURS_PER_REAL_SEC = 24 / DAY_DURATION_SEC; // 0.25 h/s -> kW * h = kWh
+      const AUTO_LINK_RANGE = 2.5;        // Connexion automatique <= 2,5 cases
+      const NORMAL_CABLE_RANGE = 3.2;     // Portée câble standard
+      const PYLON_CABLE_RANGE = 6.2;      // Portée câble via pylône en bois
+      const CABLE_COST = 15;
+
+      const TERRAIN = {
+        GRASS: 0,
+        SOLAR_GLADE: 1,
+        WIND_HILL: 2,
+        DIRT_PATH: 3,
+        RIVER: 4,
+        WOOD_BRIDGE: 5,
+        FOREST: 6
+      };
+
+      const BTYPE = {
+        SOLAR: 'SOLAR',
+        WIND: 'WIND',
+        HYDRO: 'HYDRO',
+        BATTERY: 'BATTERY',
+        PYLON: 'PYLON',
+        BIOMASS: 'BIOMASS',
+        HOUSE: 'HOUSE',
+        FARM: 'FARM',
+        GREENHOUSE: 'GREENHOUSE'
+      };
+
+      const BUILDING_SPECS = {
+        SOLAR: {
+          type: 'SOLAR',
+          name: 'Panneau Solaire',
+          shortName: 'Solaire',
+          cost: 120,
+          baseProd: 28,
+          baseDemand: 0,
+          storage: 0,
+          revenue: 0,
+          isConsumer: false,
+          waterOnly: false,
+          mapColor: '#3a7bc8',
+          meta: '28 kW jour'
+        },
+        WIND: {
+          type: 'WIND',
+          name: 'Éolienne',
+          shortName: 'Éolienne',
+          cost: 210,
+          baseProd: 30,
+          baseDemand: 0,
+          storage: 0,
+          revenue: 0,
+          isConsumer: false,
+          waterOnly: false,
+          mapColor: '#f2f7f0',
+          meta: '30 kW vent'
+        },
+        HYDRO: {
+          type: 'HYDRO',
+          name: 'Turbine Hydraulique',
+          shortName: 'Hydraulique',
+          cost: 320,
+          baseProd: 42,
+          baseDemand: 0,
+          storage: 0,
+          revenue: 0,
+          isConsumer: false,
+          waterOnly: true,
+          mapColor: '#56b4db',
+          meta: '42 kW 24h'
+        },
+        BATTERY: {
+          type: 'BATTERY',
+          name: 'Batterie de Stockage',
+          shortName: 'Batterie',
+          cost: 180,
+          baseProd: 0,
+          baseDemand: 0,
+          storage: 220,
+          revenue: 0,
+          isConsumer: false,
+          waterOnly: false,
+          mapColor: '#6ca853',
+          meta: '220 kWh'
+        },
+        PYLON: {
+          type: 'PYLON',
+          name: 'Pylône Relais en bois',
+          shortName: 'Pylône',
+          cost: 45,
+          baseProd: 0,
+          baseDemand: 0,
+          storage: 0,
+          revenue: 0,
+          isConsumer: false,
+          waterOnly: false,
+          mapColor: '#b58454',
+          meta: 'Portée 6,2'
+        },
+        BIOMASS: {
+          type: 'BIOMASS',
+          name: 'Centrale Biomasse',
+          shortName: 'Biomasse',
+          cost: 850,
+          baseProd: 150,
+          baseDemand: 0,
+          storage: 0,
+          revenue: 0,
+          isConsumer: false,
+          waterOnly: false,
+          mapColor: '#c96f44',
+          meta: '150 kW 24h'
+        },
+        HOUSE: {
+          type: 'HOUSE',
+          name: 'Maison / Hameau',
+          shortName: 'Hameau',
+          cost: 0,
+          baseProd: 0,
+          baseDemand: 14,
+          storage: 0,
+          revenue: 11,
+          isConsumer: true,
+          waterOnly: false,
+          mapColor: '#d9694c',
+          meta: '-14 kW'
+        },
+        FARM: {
+          type: 'FARM',
+          name: 'Ferme / Scierie',
+          shortName: 'Ferme',
+          cost: 0,
+          baseProd: 0,
+          baseDemand: 34,
+          storage: 0,
+          revenue: 28,
+          isConsumer: true,
+          waterOnly: false,
+          mapColor: '#d99a3b',
+          meta: '-34 kW'
+        },
+        GREENHOUSE: {
+          type: 'GREENHOUSE',
+          name: 'Serre / Atelier',
+          shortName: 'Serre',
+          cost: 0,
+          baseProd: 0,
+          baseDemand: 50,
+          storage: 0,
+          revenue: 44,
+          isConsumer: true,
+          waterOnly: false,
+          mapColor: '#91d1a3',
+          meta: '-50 kW'
+        }
+      };
+
+      const TOOLS = [
+        { id: 'SOLAR', key: '1', label: 'Solaire', costText: '120 €', meta: '28 kW jour', sprite: 'SOLAR', hint: 'Panneau Solaire (120 €) : 28 kW le jour (+35 % sur clairière dorée). [R] pour pivoter.' },
+        { id: 'WIND', key: '2', label: 'Éolienne', costText: '210 €', meta: '30 kW vent', sprite: 'WIND', hint: 'Éolienne (210 €) : ~30 kW selon le vent (+35 % sur colline venteuse).' },
+        { id: 'HYDRO', key: '3', label: 'Hydraulique', costText: '320 €', meta: '42 kW eau', sprite: 'HYDRO', hint: 'Turbine Hydraulique (320 €) : 42 kW constants 24h/24 — se place directement sur la rivière !' },
+        { id: 'BATTERY', key: '4', label: 'Batterie', costText: '180 €', meta: '220 kWh', sprite: 'BATTERY', hint: 'Batterie de Stockage (180 €) : Stocke 220 kWh le jour pour prendre le relais la nuit.' },
+        { id: 'PYLON', key: '5', label: 'Pylône bois', costText: '45 €', meta: 'Portée 6,2', sprite: 'PYLON', hint: 'Pylône Relais en bois (45 €) : Étend la portée à 6,2 cases pour franchir rivières et chemins.' },
+        { id: 'BIOMASS', key: '6', label: 'Biomasse', costText: '850 €', meta: '150 kW 24h', sprite: 'BIOMASS', hint: 'Centrale Biomasse (850 €) : 150 kW constants jour et nuit grâce au bois local.' },
+        { id: 'CABLE', key: '7/C', label: 'Câble', costText: '15 €', meta: 'Relier A→B', sprite: 'ICON_CABLE', cls: 'dock-cable', hint: 'Câble électrique (15 €) : Cliquez sur un bâtiment A puis un bâtiment B (vert = portée OK).' },
+        { id: 'SELL', key: '8/X', label: 'Vendre', costText: '+70 %', meta: 'Démolir', sprite: 'ICON_SELL', cls: 'dock-sell', hint: 'Vendre / Démolir : Cliquez un de vos bâtiments (+70 % remboursé) ou un câble (+10 €).' },
+        { id: 'INSPECT', key: '9', label: 'Inspecter', costText: 'Infos', meta: 'Améliorer', sprite: 'ICON_INSPECT', hint: 'Inspecter : Cliquez sur un bâtiment pour voir sa production et l\'améliorer (Niv. 1 → 3).' }
+      ];
+
+      // 3 cartes naturelles soigneusement dessinées
+      const MAP_PRESETS = [
+        {
+          id: 'V-01',
+          name: 'Vallée Solaire',
+          cols: 24,
+          rows: 16,
+          startCredits: 1200,
+          goalCredits: 5000,
+          sandbox: false,
+          // Rivière sinueuse horizontale (y en fonction de x)
+          riverFn: (x) => Math.round(8.2 + Math.sin(x * 0.34) * 1.4),
+          pathCols: [11],
+          pathRows: [],
+          solarGlades: [
+            [3, 3, 4, 3],
+            [14, 2, 4, 3],
+            [4, 11, 3, 3]
+          ],
+          windHills: [
+            [18, 10, 4, 4],
+            [15, 5, 3, 2],
+            [2, 11, 2, 3]
+          ],
+          starterBuildings: [
+            { type: 'SOLAR', gx: 4, gy: 4, idTag: 's1' },
+            { type: 'SOLAR', gx: 6, gy: 4, idTag: 's2' },
+            { type: 'BATTERY', gx: 5, gy: 6, idTag: 'b1', initCharge: 0.65 },
+            { type: 'PYLON', gx: 9, gy: 6, idTag: 'p1' },
+            { type: 'HOUSE', gx: 7, gy: 5, idTag: 'h1' },
+            { type: 'HOUSE', gx: 7, gy: 7, idTag: 'h2' },
+            // À raccorder de l'autre côté du chemin et de la rivière !
+            { type: 'FARM', gx: 14, gy: 6, idTag: 'f1' },
+            { type: 'GREENHOUSE', gx: 15, gy: 12, idTag: 'g1' },
+            { type: 'HOUSE', gx: 8, gy: 12, idTag: 'h3' }
+          ],
+          starterLinks: [
+            ['s1', 's2'],
+            ['s1', 'b1'],
+            ['s2', 'h1'],
+            ['b1', 'h2'],
+            ['h1', 'h2'],
+            ['h1', 'p1'],
+            ['h2', 'p1']
+          ]
+        },
+        {
+          id: 'V-02',
+          name: 'Rivière & Collines',
+          cols: 28,
+          rows: 18,
+          startCredits: 1500,
+          goalCredits: 9000,
+          sandbox: false,
+          riverFn: (x) => Math.round(7.4 + Math.sin(x * 0.28 + 0.6) * 2.1),
+          pathCols: [10, 20],
+          pathRows: [13],
+          solarGlades: [
+            [3, 2, 4, 3],
+            [13, 2, 4, 3],
+            [22, 9, 4, 3]
+          ],
+          windHills: [
+            [13, 10, 4, 2],
+            [3, 14, 5, 2],
+            [22, 14, 4, 2]
+          ],
+          starterBuildings: [
+            { type: 'SOLAR', gx: 4, gy: 3, idTag: 's1' },
+            { type: 'SOLAR', gx: 6, gy: 3, idTag: 's2' },
+            { type: 'BATTERY', gx: 5, gy: 5, idTag: 'b1', initCharge: 0.72 },
+            { type: 'PYLON', gx: 9, gy: 4, idTag: 'p1' },
+            { type: 'HOUSE', gx: 7, gy: 4, idTag: 'h1' },
+            { type: 'HOUSE', gx: 7, gy: 2, idTag: 'h2' },
+            // Territoires à électrifier
+            { type: 'FARM', gx: 13, gy: 4, idTag: 'f1' },
+            { type: 'GREENHOUSE', gx: 15, gy: 11, idTag: 'g1' },
+            { type: 'FARM', gx: 23, gy: 4, idTag: 'f2' },
+            { type: 'GREENHOUSE', gx: 23, gy: 15, idTag: 'g2' },
+            { type: 'HOUSE', gx: 6, gy: 11, idTag: 'h3' }
+          ],
+          starterLinks: [
+            ['s1', 's2'],
+            ['s1', 'b1'],
+            ['b1', 'h1'],
+            ['s2', 'h2'],
+            ['h1', 'h2'],
+            ['h1', 'p1']
+          ]
+        },
+        {
+          id: 'V-03',
+          name: 'Campagne Libre',
+          cols: 26,
+          rows: 16,
+          startCredits: 50000,
+          goalCredits: 0,
+          sandbox: true,
+          riverFn: (x) => Math.round(8.0 + Math.cos(x * 0.26) * 1.4),
+          pathCols: [13],
+          pathRows: [],
+          solarGlades: [
+            [2, 2, 5, 3],
+            [16, 2, 6, 3]
+          ],
+          windHills: [
+            [2, 11, 5, 3],
+            [17, 11, 6, 3]
+          ],
+          starterBuildings: [
+            { type: 'SOLAR', gx: 4, gy: 3, idTag: 's1' },
+            { type: 'WIND', gx: 4, gy: 12, idTag: 'w1' },
+            { type: 'BATTERY', gx: 6, gy: 5, idTag: 'b1', initCharge: 0.8 },
+            { type: 'PYLON', gx: 11, gy: 5, idTag: 'p1' },
+            { type: 'HOUSE', gx: 8, gy: 4, idTag: 'h1' },
+            { type: 'HOUSE', gx: 8, gy: 6, idTag: 'h2' },
+            { type: 'FARM', gx: 16, gy: 5, idTag: 'f1' },
+            { type: 'GREENHOUSE', gx: 17, gy: 12, idTag: 'g1' }
+          ],
+          starterLinks: [
+            ['s1', 'b1'],
+            ['b1', 'h1'],
+            ['h1', 'h2'],
+            ['h1', 'p1'],
+            ['h2', 'p1']
+          ]
+        }
+      ];
+
+      // -----------------------------------------------------------------------
+      // 2. AUDIO DOUX ET NATUREL (WEB AUDIO API — BOIS, CARILLON, EAU)
+      // -----------------------------------------------------------------------
+      class NatureAudio {
+        constructor() {
+          this.ctx = null;
+          this.enabled = true;
+        }
+        ensure() {
+          if (!this.enabled) return null;
+          if (!this.ctx) {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            if (!AC) return null;
+            this.ctx = new AC();
+          }
+          if (this.ctx.state === 'suspended') this.ctx.resume().catch(() => {});
+          return this.ctx;
+        }
+        pluck(freq, dur = 0.16, vol = 0.065, delay = 0, type = 'sine') {
+          try {
+            const ctx = this.ensure();
+            if (!ctx) return;
+            const now = ctx.currentTime + delay;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(0.0001, now);
+            gain.gain.linearRampToValueAtTime(vol, now + 0.015);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + dur + 0.02);
+          } catch (_) {}
+        }
+        click() { this.pluck(520, 0.07, 0.045, 0, 'triangle'); }
+        place() {
+          // Son boisé chaleureux (marimba)
+          this.pluck(330, 0.14, 0.065, 0, 'triangle');
+          this.pluck(494, 0.18, 0.06, 0.045, 'sine');
+        }
+        placeWater() {
+          // Clapotis doux pour turbine hydraulique
+          this.pluck(392, 0.15, 0.055, 0, 'sine');
+          this.pluck(587, 0.20, 0.06, 0.06, 'sine');
+          this.pluck(784, 0.18, 0.045, 0.12, 'sine');
+        }
+        cable() {
+          this.pluck(440, 0.09, 0.045, 0, 'triangle');
+          this.pluck(659, 0.12, 0.05, 0.04, 'sine');
+        }
+        upgrade() {
+          this.pluck(392, 0.14, 0.06, 0, 'triangle');
+          this.pluck(493.88, 0.14, 0.06, 0.07, 'triangle');
+          this.pluck(587.33, 0.16, 0.065, 0.14, 'sine');
+          this.pluck(783.99, 0.26, 0.07, 0.21, 'sine');
+        }
+        sell() {
+          this.pluck(440, 0.12, 0.05, 0, 'triangle');
+          this.pluck(330, 0.15, 0.05, 0.06, 'sine');
+        }
+        error() {
+          this.pluck(210, 0.14, 0.055, 0, 'triangle');
+          this.pluck(175, 0.15, 0.05, 0.07, 'triangle');
+        }
+        chime() {
+          this.pluck(523.25, 0.18, 0.055, 0, 'sine');
+          this.pluck(659.25, 0.24, 0.06, 0.1, 'sine');
+        }
+        victory() {
+          [523.25, 659.25, 783.99, 1046.5].forEach((n, i) => this.pluck(n, 0.34, 0.07, i * 0.11, 'sine'));
+        }
+        gameover() {
+          this.pluck(293.66, 0.28, 0.065, 0, 'triangle');
+          this.pluck(246.94, 0.32, 0.065, 0.18, 'triangle');
+          this.pluck(196.0, 0.45, 0.07, 0.36, 'sine');
+        }
+      }
+      const audio = new NatureAudio();
+
+      // -----------------------------------------------------------------------
+      // 3. FABRIQUE PROCÉDURALE DE PIXEL-ART 16x16 (100 % NATURE, ZÉRO NÉON)
+      // -----------------------------------------------------------------------
+      function createCanvas16() {
+        const c = document.createElement('canvas');
+        c.width = 16;
+        c.height = 16;
+        return c;
+      }
+
+      function drawPixels(ctx, rows, pal) {
+        for (let y = 0; y < rows.length; y++) {
+          const r = rows[y];
+          for (let x = 0; x < r.length; x++) {
+            const ch = r[x];
+            if (ch !== '.' && pal[ch]) {
+              ctx.fillStyle = pal[ch];
+              ctx.fillRect(x, y, 1, 1);
+            }
+          }
+        }
+      }
+
+      const SPRITES = {};
+      const TILES = {};
+
+      function buildAllNatureArt() {
+        const P = {
+          K: '#262018', // contour brun-charbon naturel
+          W: '#f7f3e6', // blanc crème naturel
+          S: '#d8d2c3', // gris pierre clair
+          G: '#8f8c80', // gris pierre moyen
+          D: '#565952', // ardoise foncée
+          B: '#8a5d3b', // bois moyen
+          b: '#5c3c24', // bois foncé
+          L: '#b8875a', // bois clair
+          R: '#c2543e', // tuile terre cuite
+          r: '#8f3928', // tuile ombre
+          P: '#2d5c8f', // bleu panneau solaire
+          p: '#1f4168', // bleu solaire foncé
+          C: '#5ca3d4', // reflet ciel / verre
+          c: '#a8daf2', // reflet verre clair
+          E: '#5a9447', // vert prairie / feuille
+          e: '#3b6b30', // vert forêt foncé
+          H: '#86bf63', // vert clair / herbe
+          Y: '#f2c75c', // fenêtre allumée chaud / soleil
+          y: '#d49a35', // or doux / paille
+          O: '#d67c3b', // cuivre / brique chaude
+          A: '#cc4b39'  // rouge alerte naturel
+        };
+
+        // --- 1) PANNEAU SOLAIRE (sur châssis bois & alu) ---
+        {
+          const c = createCanvas16();
+          drawPixels(c.getContext('2d'), [
+            '................',
+            '..KKKKKKKKKKKK..',
+            '.KSSSSSSSSSSSSK.',
+            '.KSCPPPPSCPPPK..',
+            '.KSPPPppSPPPpSK.',
+            '.KSppPPPsppPPK..',
+            '.KSSSSSSSSSSSSK.',
+            '.KSCPPPPSCPPPK..',
+            '.KSPPPppSPPPpSK.',
+            '.KSSSSSSSSSSSSK.',
+            '..KKbbBBBBbbKK..',
+            '....KbLLLLbK....',
+            '....KbBBBBbK....',
+            '...KbbKKKKbbK...',
+            '...KKK....KKK...',
+            '................'
+          ], P);
+          SPRITES.SOLAR = c;
+        }
+
+        // --- 2) ÉOLIENNE (mât blanc + 4 frames de pales nettes) ---
+        {
+          const base = createCanvas16();
+          drawPixels(base.getContext('2d'), [
+            '................',
+            '................',
+            '................',
+            '................',
+            '......KKKK......',
+            '.....KSWWSK.....',
+            '......KWSK......',
+            '......KWSK......',
+            '......KWSK......',
+            '.....KKWSKK.....',
+            '.....KSWWSK.....',
+            '....KSWWWSK.....',
+            '....KEEEEEK.....',
+            '...KHHHEEHHK....',
+            '...KKKKKKKKK....',
+            '................'
+          ], P);
+          SPRITES.WIND_BASE = base;
+
+          const rotorFrames = [
+            [
+              '......KKKK......',
+              '......KWWK......',
+              '......KWSK......',
+              '......KWWK......',
+              '.......KK.......',
+              '.KKKK.KGGK.KKKK.',
+              'KWWWSKGWWGKWWWSK',
+              '.KKKK.KGGK.KKKK.',
+              '................',
+              '................',
+              '................',
+              '................',
+              '................',
+              '................',
+              '................',
+              '................'
+            ],
+            [
+              '.........KKK....',
+              '........KWWK....',
+              '.......KWSK.....',
+              '.......KWWK.....',
+              '..KK....KK......',
+              '.KWWK..KGGK.....',
+              '..KWSKKGWWK.....',
+              '...KWWKKGGK.KK..',
+              '........KWWK....',
+              '.........KWSK...',
+              '..........KWWK..',
+              '...........KK...',
+              '................',
+              '................',
+              '................',
+              '................'
+            ],
+            [
+              '...........KK...',
+              '..........KWWK..',
+              '.........KWSK...',
+              '........KWWK....',
+              '...KK....KK.....',
+              '..KWWK.KGGK.....',
+              '...KWSKGWWK.....',
+              '....KWWKGGK.....',
+              '.......KWWK.....',
+              '......KWSK......',
+              '.....KWWK.......',
+              '......KK........',
+              '................',
+              '................',
+              '................',
+              '................'
+            ],
+            [
+              '...KK...........',
+              '..KWWK..........',
+              '...KWSK.........',
+              '....KWWK........',
+              '.....KK....KK...',
+              '.....KGGK.KWWK..',
+              '.....GWWKKWSK...',
+              '.....KGGKKWWK...',
+              '.......KWWK.....',
+              '......KWSK......',
+              '.....KWWK.......',
+              '.....KK.........',
+              '................',
+              '................',
+              '................',
+              '................'
+            ]
+          ];
+          SPRITES.WIND_ROTORS = rotorFrames.map((pat) => {
+            const rc = createCanvas16();
+            drawPixels(rc.getContext('2d'), pat, P);
+            return rc;
+          });
+
+          const icon = createCanvas16();
+          const ictx = icon.getContext('2d');
+          ictx.drawImage(base, 0, 0);
+          ictx.drawImage(SPRITES.WIND_ROTORS[0], 0, 0);
+          SPRITES.WIND = icon;
+        }
+
+        // --- 3) TURBINE HYDRAULIQUE (2 frames animées dans l'eau) ---
+        {
+          for (let f = 0; f < 2; f++) {
+            const c = createCanvas16();
+            const pat = f === 0 ? [
+              '................',
+              '..KKKKKKKKKKKK..',
+              '.KbLLLLLLLLLLbK.',
+              '.KbBKKKKKKKKBbK.',
+              '.KbBKcCccCcKBbK.',
+              '.KbBKBbBBbBKBbK.',
+              '.KbBKcCCCCcKBbK.',
+              '.KbBKBbYYbBKBbK.',
+              '.KbBKcCCCCcKBbK.',
+              '.KbBKBbBBbBKBbK.',
+              '.KbBKccCCccKBbK.',
+              '.KbBKKKKKKKKBbK.',
+              '.KbLLLLLLLLLLbK.',
+              '..KKKKcWWcKKKK..',
+              '....ccWWWWcc....',
+              '................'
+            ] : [
+              '................',
+              '..KKKKKKKKKKKK..',
+              '.KbLLLLLLLLLLbK.',
+              '.KbBKKKKKKKKBbK.',
+              '.KbBKBbBBbBKBbK.',
+              '.KbBKccCCccKBbK.',
+              '.KbBKBbYYbBKBbK.',
+              '.KbBKcCccCcKBbK.',
+              '.KbBKBbBBbBKBbK.',
+              '.KbBKccCCccKBbK.',
+              '.KbBKcCWWCcKBbK.',
+              '.KbBKKKKKKKKBbK.',
+              '.KbLLLLLLLLLLbK.',
+              '..KKcWWccWWcKK..',
+              '.....ccWWcc.....',
+              '................'
+            ];
+            drawPixels(c.getContext('2d'), pat, P);
+            SPRITES['HYDRO_' + f] = c;
+          }
+          SPRITES.HYDRO = SPRITES.HYDRO_0;
+        }
+
+        // --- 4) BATTERIE DE STOCKAGE (boîtier bois & vert sauge + barre de charge) ---
+        {
+          const shell = createCanvas16();
+          drawPixels(shell.getContext('2d'), [
+            '....KKKKKKKK....',
+            '....KSSGGSSK....',
+            '..KKKKKKKKKKKK..',
+            '.KbeEEEEEEEEebK.',
+            '.KeKKKKKKKKKKeK.',
+            '.KeKDDDDDDDDKeK.',
+            '.KeKDDDDDDDDKeK.',
+            '.KeKKKKKKKKKKeK.',
+            '.KeKKKKKKKKKKeK.',
+            '.KeKDDDDDDDDKeK.',
+            '.KeKDDDDDDDDKeK.',
+            '.KeKKKKKKKKKKeK.',
+            '.KbLLLLLLLLLLbK.',
+            '.KbbbbbbbbbbbbK.',
+            '..KKKKKKKKKKKK..',
+            '................'
+          ], P);
+          SPRITES.BATTERY_SHELL = shell;
+
+          const icon = createCanvas16();
+          const ictx = icon.getContext('2d');
+          ictx.drawImage(shell, 0, 0);
+          drawPixels(ictx, [
+            '................',
+            '................',
+            '................',
+            '................',
+            '................',
+            '....HHHHHHHH....',
+            '....EEEEEEEE....',
+            '................',
+            '................',
+            '....YYYYYYYY....',
+            '....yyyyyyyy....',
+            '................',
+            '................',
+            '................',
+            '................',
+            '................'
+          ], P);
+          SPRITES.BATTERY = icon;
+        }
+
+        // --- 5) PYLÔNE RELAIS EN BOIS ---
+        {
+          const c = createCanvas16();
+          drawPixels(c.getContext('2d'), [
+            '......KKKK......',
+            '......KbbK......',
+            '.KKK..KBBK..KKK.',
+            'KWWWKbLLLLbKWWWK',
+            '.KKKbbbbbbbbKKK.',
+            '.....KbLLbK.....',
+            '....KKbBBbKK....',
+            '...KbKbBBbKbK...',
+            '....KKbBBbKK....',
+            '.....KbBBbK.....',
+            '.....KbLLbK.....',
+            '....KbbBBbbK....',
+            '....KbBbbBbK....',
+            '...KbbKKKKbbK...',
+            '...KKK....KKK...',
+            '................'
+          ], P);
+          SPRITES.PYLON = c;
+        }
+
+        // --- 6) CENTRALE BIOMASSE (brique chaleureuse, bois & cheminée cuivre) ---
+        {
+          const c = createCanvas16();
+          drawPixels(c.getContext('2d'), [
+            '..........KKKK..',
+            '..........KSSK..',
+            '..........KGGK..',
+            '..KKKKKKKKKGGK..',
+            '.KRRRRRRRRKGGK..',
+            'KRrrrrrrrrKGGKK.',
+            'KRRRRRRRRRKKKKbK',
+            'KOOOOOOOOOOObLbK',
+            'KOYYOODDOOYYbBbK',
+            'KOyyOODDOOyybLbK',
+            'KOOOOOOOOOOObBbK',
+            'KOObbBBBBbbObLbK',
+            'KOObBEEEEBbObBbK',
+            'KGGbbbbbbbbGbbbK',
+            '.KKKKKKKKKKKKKK.',
+            '................'
+          ], P);
+          SPRITES.BIOMASS = c;
+        }
+
+        // --- 7) MAISON / HAMEAU (allumée chaud vs éteinte) ---
+        {
+          const on = createCanvas16();
+          drawPixels(on.getContext('2d'), [
+            '......KKKK..KK..',
+            '....KKRRRRKKGK..',
+            '..KKRRRRRRRRGK..',
+            '.KRRrrrrrrrrRRK.',
+            'KRRRRRRRRRRRRRRK',
+            'KrrrrrrrrrrrrrrK',
+            '.KWWWWWWWWWWWWK.',
+            '.KWKKKWWWWKKKWK.',
+            '.KWKYYWWWWYYKWK.',
+            '.KWKKKWWWWKKKWK.',
+            '.KWWWWKbbKWWWWK.',
+            '.KWSSWKbLKWSSWK.',
+            '.KWWWWKbbKWWWWK.',
+            '.KEEEKKKKKKEEEK.',
+            '..KKKKKKKKKKKK..',
+            '................'
+          ], P);
+          SPRITES.HOUSE = on;
+
+          const off = createCanvas16();
+          drawPixels(off.getContext('2d'), [
+            '......KKKK..KK..',
+            '....KKRRRRKKGK..',
+            '..KKRRRRRRRRGK..',
+            '.KRRrrrrrrrrRRK.',
+            'KRRRRRRRRRRRRRRK',
+            'KrrrrrrrrrrrrrrK',
+            '.KSSSSSSSSSSSSK.',
+            '.KSKKKSSSSKKKSK.',
+            '.KSKDDSSSSDDKSK.',
+            '.KSKKKSSSSKKKSK.',
+            '.KSSSSKbbKSSSSK.',
+            '.KSGGSKbLKSGGSK.',
+            '.KSSSSKbbKSSSSK.',
+            '.KeEeKKKKKKeEeK.',
+            '..KKKKKKKKKKKK..',
+            '................'
+          ], P);
+          SPRITES.HOUSE_OFF = off;
+        }
+
+        // --- 8) FERME / SCIERIE (grange bois, silo & bûches) ---
+        {
+          const on = createCanvas16();
+          drawPixels(on.getContext('2d'), [
+            '...........KKKK.',
+            '...KKKKKK..KSSK.',
+            '..KRRRRRRKKSSSK.',
+            '.KRrrrrrrRKSGGK.',
+            'KRRRRRRRRRKSGGK.',
+            'KrrrrrrrrrKSGGK.',
+            '.KbLLLLLLbKSGGK.',
+            '.KbBYYYYBbKSGGK.',
+            '.KbBbbbbBbKSGGK.',
+            '.KbBKLbKBbKSGGK.',
+            '.KbBKbLKBbKSGGK.',
+            '.KbBbbbbBbKSSSK.',
+            '.KbbBBBBbbKbbKK.',
+            '.KyYyBBBBbbLLbK.',
+            '..KKKKKKKKKKKK..',
+            '................'
+          ], P);
+          SPRITES.FARM = on;
+
+          const off = createCanvas16();
+          drawPixels(off.getContext('2d'), [
+            '...........KKKK.',
+            '...KKKKKK..KGGK.',
+            '..KrrrrrrKKGGGK.',
+            '.KrrrrrrrrKGGGK.',
+            'KrrrrrrrrrKGGGK.',
+            'KbbbbbbbbbKGGGK.',
+            '.KbBBBBBBbKGGGK.',
+            '.KbBDDDDBbKGGGK.',
+            '.KbBbbbbBbKGGGK.',
+            '.KbBKbBKBbKGGGK.',
+            '.KbBKBbKBbKGGGK.',
+            '.KbBbbbbBbKGGGK.',
+            '.KbbbbbbbbKbbKK.',
+            '.KbBBBBBBBBBBbK.',
+            '..KKKKKKKKKKKK..',
+            '................'
+          ], P);
+          SPRITES.FARM_OFF = off;
+        }
+
+        // --- 9) SERRE / ATELIER BOTANIQUE ---
+        {
+          const on = createCanvas16();
+          drawPixels(on.getContext('2d'), [
+            '....KKKKKKKK....',
+            '..KKcCCCCCCcKK..',
+            '.KcCWWWWWWWWCcK.',
+            '.KCCKccYYccKCCK.',
+            'KCcCKcHYYHcKCcCK',
+            'KCCCKHHEEHHKCCCK',
+            'KCcCKHEeeEHKCcCK',
+            'KCCCKHHEEHHKCCCK',
+            'KCcCKYYEEYYKCcCK',
+            'KCCCKccCCccKCCCK',
+            'KbbbbKKKKKKbbbbK',
+            'KbLLbKSSSSKbLLbK',
+            'KbBBbKSSGGKbBBbK',
+            'KbbbbbbbbbbbbbbK',
+            '.KKKKKKKKKKKKKK.',
+            '................'
+          ], P);
+          SPRITES.GREENHOUSE = on;
+
+          const off = createCanvas16();
+          drawPixels(off.getContext('2d'), [
+            '....KKKKKKKK....',
+            '..KKGGGGGGGGKK..',
+            '.KGGSSSSSSSSGGK.',
+            '.KGGKCCGGCCKGGK.',
+            'KGGCKGeEEeKGCGGK',
+            'KGGCKeEeeEeKCGGK',
+            'KGGCKeEeeEeKCGGK',
+            'KGGCKGeEEeKGCGGK',
+            'KGGCKCCeeCCKCGGK',
+            'KGGCKGGGGGGKCGGK',
+            'KbbbbKKKKKKbbbbK',
+            'KbBBbKGGGGKbBBbK',
+            'KbBBbKGGDDKbBBbK',
+            'KbbbbbbbbbbbbbbK',
+            '.KKKKKKKKKKKKKK.',
+            '................'
+          ], P);
+          SPRITES.GREENHOUSE_OFF = off;
+        }
+
+        // --- ICÔNES D'OUTILS ---
+        {
+          const cable = createCanvas16();
+          drawPixels(cable.getContext('2d'), [
+            '................',
+            '...........KKK..',
+            '..........KLLK..',
+            '.........KbBBbK.',
+            '........KKbbbK..',
+            '.......KDDK.....',
+            '......KDDK......',
+            '.....KYYK.......',
+            '....KDDK........',
+            '...KDDK.........',
+            '..KbbbKK........',
+            '.KbBBbK.........',
+            '..KLLK..........',
+            '..KKK...........',
+            '................',
+            '................'
+          ], P);
+          SPRITES.ICON_CABLE = cable;
+
+          const sell = createCanvas16();
+          drawPixels(sell.getContext('2d'), [
+            '................',
+            '..KK........KK..',
+            '.KAAK......KAAK.',
+            '.KAWAK....KAWAK.',
+            '..KAAAK..KAAAK..',
+            '...KAAAKKAAAK...',
+            '....KAAAAAAK....',
+            '.....KAWWAK.....',
+            '....KAAAAAAK....',
+            '...KAAAKKAAAK...',
+            '..KAAAK..KAAAK..',
+            '.KAWAK....KAWAK.',
+            '.KAAK......KAAK.',
+            '..KK........KK..',
+            '................',
+            '................'
+          ], P);
+          SPRITES.ICON_SELL = sell;
+
+          const insp = createCanvas16();
+          drawPixels(insp.getContext('2d'), [
+            '................',
+            '....KKKKKK......',
+            '..KKbbbbbbKK....',
+            '.KbLLcCCCLLbK...',
+            '.KbLcWWWWcLbK...',
+            '.KbLCWccWCLbK...',
+            '.KbLCWccWCLbK...',
+            '.KbLcWWWWcLbK...',
+            '.KbLLcCCCLLbK...',
+            '..KKbbbbbbKK....',
+            '....KKKKKKbbK...',
+            '.........KbLbK..',
+            '..........KbLbK.',
+            '...........KbbK.',
+            '............KK..',
+            '................'
+          ], P);
+          SPRITES.ICON_INSPECT = insp;
+        }
+
+        // --- TUILES DE TERRAIN NATUREL (16x16) ---
+        // 4 variantes de prairies vivantes (herbe, touffes, petites fleurs sauvages)
+        for (let v = 0; v < 4; v++) {
+          const c = createCanvas16();
+          const g = c.getContext('2d');
+          g.fillStyle = '#6da64f';
+          g.fillRect(0, 0, 16, 16);
+          // subtile texture organique
+          g.fillStyle = '#649c47';
+          g.fillRect(0, 0, 16, 1);
+          g.fillRect(0, 0, 1, 16);
+          g.fillStyle = '#7bb55b';
+          g.fillRect(2 + v * 2, 3, 2, 1);
+          g.fillRect(10 - v, 11, 3, 1);
+          g.fillStyle = '#588c3e';
+          g.fillRect(4, 9 + (v % 2), 1, 2);
+          g.fillRect(5, 10 + (v % 2), 1, 1);
+          g.fillRect(12, 4, 1, 2);
+          if (v === 1) {
+            // petites pâquerettes blanches
+            g.fillStyle = '#faf5e4';
+            g.fillRect(3, 5, 1, 1);
+            g.fillRect(11, 12, 1, 1);
+            g.fillStyle = '#f2c75c';
+            g.fillRect(4, 5, 1, 1);
+          } else if (v === 2) {
+            // boutons d'or & trèfle
+            g.fillStyle = '#f2c75c';
+            g.fillRect(11, 5, 1, 1);
+            g.fillRect(6, 13, 1, 1);
+            g.fillStyle = '#87c468';
+            g.fillRect(5, 13, 1, 1);
+          } else if (v === 3) {
+            // petite fleur lavande/bleuet
+            g.fillStyle = '#8cb5e8';
+            g.fillRect(4, 12, 1, 1);
+            g.fillStyle = '#f5eedc';
+            g.fillRect(12, 7, 1, 1);
+          }
+          TILES['GRASS_' + v] = c;
+        }
+
+        // Forêt de sapins et chênes (2 variantes)
+        for (let f = 0; f < 2; f++) {
+          const c = createCanvas16();
+          const g = c.getContext('2d');
+          g.fillStyle = '#477839';
+          g.fillRect(0, 0, 16, 16);
+          if (f === 0) {
+            // Sapin touffu + petit arbre
+            drawPixels(g, [
+              '....eEEe........',
+              '...eEHHee.......',
+              '..eEHHHeee..eEe.',
+              '..eeEEEeee.eEHEe',
+              '.eEEHHHeee.eEEEe',
+              '.eeEEEEEee..eee.',
+              '..eEEEEEe....b..',
+              '....ebb.........',
+              '.....bb...eEEe..',
+              '.........eEHHee.',
+              '..eEEe..eEHHHeee',
+              '.eEHHee.eeEEEeee',
+              '.eEEEEe..eEEEEEe',
+              '..eeee.....bb...',
+              '...bb......bb...',
+              '................'
+            ], P);
+          } else {
+            // Chêne rond chaleureux
+            drawPixels(g, [
+              '................',
+              '....eEEEEe......',
+              '..eeEHHHHEee....',
+              '.eEEHHHHHHEEe...',
+              '.eEHHHHHHHHEe...',
+              '.eEEHHHHHHEEe...',
+              '..eeEEEEEEee....',
+              '...eeEEEEee.....',
+              '.....ebbb.......',
+              '......bb...eEEe.',
+              '......bb..eEHHee',
+              '.eEe......eEEEEe',
+              'eEHEe......eeee.',
+              'eEEEe.......bb..',
+              '..b.............',
+              '................'
+            ], P);
+          }
+          TILES['FOREST_' + f] = c;
+        }
+
+        // Clairière dorée ensoleillée (+35 % Solaire)
+        {
+          const c = createCanvas16();
+          const g = c.getContext('2d');
+          g.fillStyle = '#8db553';
+          g.fillRect(0, 0, 16, 16);
+          g.fillStyle = '#b4c961';
+          g.fillRect(1, 1, 14, 14);
+          g.fillStyle = '#d4d672';
+          g.fillRect(3, 3, 10, 10);
+          // pétales dorés et herbe lumineuse
+          g.fillStyle = '#f2c75c';
+          g.fillRect(4, 4, 2, 1);
+          g.fillRect(10, 11, 2, 1);
+          g.fillRect(11, 4, 1, 2);
+          g.fillRect(4, 10, 1, 2);
+          g.fillStyle = '#fff5cf';
+          g.fillRect(7, 7, 2, 2);
+          TILES[TERRAIN.SOLAR_GLADE] = c;
+        }
+
+        // Colline venteuse (+35 % Éolien)
+        {
+          const c = createCanvas16();
+          const g = c.getContext('2d');
+          g.fillStyle = '#5c9450';
+          g.fillRect(0, 0, 16, 16);
+          // courbes de niveau naturelles
+          g.fillStyle = '#73ad61';
+          g.fillRect(1, 2, 14, 12);
+          g.fillStyle = '#8ec776';
+          g.fillRect(3, 4, 10, 8);
+          g.fillStyle = '#a6db8c';
+          g.fillRect(5, 6, 6, 4);
+          // petites mèches d'herbe couchées par le vent
+          g.fillStyle = '#d9f2c7';
+          g.fillRect(4, 5, 4, 1);
+          g.fillRect(8, 10, 4, 1);
+          TILES[TERRAIN.WIND_HILL] = c;
+        }
+
+        // Chemin de terre (Vertical, Horizontal, Carrefour)
+        {
+          const makeRoad = (vert, horiz) => {
+            const c = createCanvas16();
+            const g = c.getContext('2d');
+            g.drawImage(TILES.GRASS_0, 0, 0);
+            g.fillStyle = '#b89467';
+            if (vert) g.fillRect(3, 0, 10, 16);
+            if (horiz) g.fillRect(0, 3, 16, 10);
+            g.fillStyle = '#caa77a';
+            if (vert) g.fillRect(5, 0, 6, 16);
+            if (horiz) g.fillRect(0, 5, 16, 6);
+            // petits cailloux et bordures de terre
+            g.fillStyle = '#99774d';
+            if (vert && !horiz) { g.fillRect(3, 0, 1, 16); g.fillRect(12, 0, 1, 16); }
+            if (horiz && !vert) { g.fillRect(0, 3, 16, 1); g.fillRect(0, 12, 16, 1); }
+            g.fillStyle = '#8c7d6b';
+            g.fillRect(6, 4, 1, 1);
+            g.fillRect(9, 11, 1, 1);
+            return c;
+          };
+          TILES.PATH_V = makeRoad(true, false);
+          TILES.PATH_H = makeRoad(false, true);
+          TILES.PATH_X = makeRoad(true, true);
+        }
+
+        // Rivière naturelle bleue (2 frames animées avec berges moussues)
+        for (let f = 0; f < 2; f++) {
+          const c = createCanvas16();
+          const g = c.getContext('2d');
+          // berges herbeuses/sableuses en haut et bas
+          g.fillStyle = '#5b8f44';
+          g.fillRect(0, 0, 16, 16);
+          g.fillStyle = '#a8966e';
+          g.fillRect(0, 1, 16, 14);
+          // eau bleue claire et profonde
+          g.fillStyle = '#387fb0';
+          g.fillRect(0, 2, 16, 12);
+          g.fillStyle = '#4a98cc';
+          g.fillRect(0, 4, 16, 8);
+          // reflets naturels doux
+          const off = f * 5;
+          g.fillStyle = '#9bd4f0';
+          g.fillRect((2 + off) % 13, 5, 3, 1);
+          g.fillRect((9 + off) % 12, 8, 4, 1);
+          g.fillRect((4 + off) % 13, 11, 3, 1);
+          g.fillStyle = '#dff5ff';
+          g.fillRect((3 + off) % 14, 5, 1, 1);
+          g.fillRect((10 + off) % 14, 8, 1, 1);
+          TILES['RIVER_' + f] = c;
+        }
+
+        // Pont en bois au-dessus de la rivière
+        {
+          const c = createCanvas16();
+          const g = c.getContext('2d');
+          g.drawImage(TILES.RIVER_0, 0, 0);
+          // planches horizontales
+          g.fillStyle = '#5c3c24';
+          g.fillRect(2, 0, 12, 16);
+          for (let y = 0; y < 16; y += 3) {
+            g.fillStyle = '#a3774c';
+            g.fillRect(3, y, 10, 2);
+            g.fillStyle = '#bd9062';
+            g.fillRect(4, y, 8, 1);
+          }
+          // rambardes bois
+          g.fillStyle = '#4a2f1b';
+          g.fillRect(2, 0, 1, 16);
+          g.fillRect(13, 0, 1, 16);
+          g.fillStyle = '#7a5233';
+          g.fillRect(2, 2, 1, 2); g.fillRect(13, 2, 1, 2);
+          g.fillRect(2, 11, 1, 2); g.fillRect(13, 11, 1, 2);
+          TILES[TERRAIN.WOOD_BRIDGE] = c;
+        }
+      }
+
+      // -----------------------------------------------------------------------
+      // 4. ÉTAT DU JEU
+      // -----------------------------------------------------------------------
+      const state = {
+        mode: 'MENU', // 'MENU' | 'PLAYING' | 'PAUSED' | 'VICTORY' | 'GAMEOVER'
+        presetIndex: 0,
+        preset: MAP_PRESETS[0],
+        endlessMode: false,
+
+        cols: 24,
+        rows: 16,
+        grid: [],
+        grassVar: [],
+
+        buildings: [],
+        cables: [],
+        nextBuildingId: 1,
+
+        credits: 1200,
+        incomePerSec: 0,
+        maxIncomePerSec: 0,
+        totalProdKW: 0,
+        totalDemandKW: 0,
+        netKW: 0,
+        totalBatStored: 0,
+        totalBatCap: 0,
+        stability: 100,
+
+        day: 1,
+        timeOfDay: 8.5,
+        elapsedTime: 0,
+        speed: 1,
+        lastSpawnDay: 1,
+
+        solarFactor: 0.9,
+        windFactor: 1.0,
+        isNight: false,
+        weatherLabel: 'Grand Soleil',
+
+        tool: 'INSPECT',
+        autoLink: true,
+        rotation: 0,
+        cableFromId: null,
+        selectedBuildingId: null,
+        hoverTile: { gx: -1, gy: -1 },
+
+        cam: { x: 0, y: 0, zoom: 1.0, targetZoom: 1.0 },
+        keys: {},
+        dragging: false,
+        dragMoved: false,
+        dragStart: { x: 0, y: 0 },
+        camStart: { x: 0, y: 0 },
+
+        // Vie ambiante naturelle
+        clouds: [],
+        birds: [],
+        butterflies: [],
+        particles: [],      // vapeur biomasse, gouttes d'eau, étincelles douces
+        floatingTexts: [],
+        stars: []
+      };
+
+      // -----------------------------------------------------------------------
+      // 5. RÉFÉRENCES DOM
+      // -----------------------------------------------------------------------
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      const miniCanvas = document.getElementById('minimapCanvas');
+      const mctx = miniCanvas.getContext('2d');
+
+      const hudTop = document.getElementById('hudTop');
+      const buildDockWrap = document.getElementById('buildDockWrap');
+      const buildDock = document.getElementById('buildDock');
+      const toolHintBar = document.getElementById('toolHintBar');
+      const btnAutoLink = document.getElementById('btnAutoLink');
+      const minimapBox = document.getElementById('minimapBox');
+      const alertBanner = document.getElementById('alertBanner');
+
+      const inspectorPanel = document.getElementById('inspectorPanel');
+      const inspPreviewCanvas = document.getElementById('inspPreviewCanvas');
+      const inspName = document.getElementById('inspName');
+      const inspLevel = document.getElementById('inspLevel');
+      const inspStatus = document.getElementById('inspStatus');
+      const inspStats = document.getElementById('inspStats');
+      const inspActions = document.getElementById('inspActions');
+
+      const mainMenuOverlay = document.getElementById('mainMenuOverlay');
+      const helpOverlay = document.getElementById('helpOverlay');
+      const pauseOverlay = document.getElementById('pauseOverlay');
+      const victoryOverlay = document.getElementById('victoryOverlay');
+      const gameoverOverlay = document.getElementById('gameoverOverlay');
+
+      // -----------------------------------------------------------------------
+      // 6. FONCTIONS UTILITAIRES
+      // -----------------------------------------------------------------------
+      function fmtEuro(val) {
+        return Math.round(val).toLocaleString('fr-FR') + ' €';
+      }
+
+      function clamp(v, min, max) {
+        return Math.max(min, Math.min(max, v));
+      }
+
+      function distTiles(a, b) {
+        return Math.hypot(a.gx - b.gx, a.gy - b.gy);
+      }
+
+      function getBuildingById(id) {
+        return state.buildings.find((b) => b.id === id) || null;
+      }
+
+      function getBuildingAt(gx, gy) {
+        return state.buildings.find((b) => b.gx === gx && b.gy === gy) || null;
+      }
+
+      function hasCableBetween(idA, idB) {
+        return state.cables.some(
+          (c) => (c.from === idA && c.to === idB) || (c.from === idB && c.to === idA)
+        );
+      }
+
+      function getMaxCableRange(bA, bB) {
+        if (bA.type === BTYPE.PYLON || bB.type === BTYPE.PYLON) return PYLON_CABLE_RANGE;
+        return NORMAL_CABLE_RANGE;
+      }
+
+      function getUpgradeMult(level) {
+        if (level === 2) return 1.45;
+        if (level === 3) return 2.0;
+        return 1.0;
+      }
+
+      function getUpgradeCost(b) {
+        const spec = BUILDING_SPECS[b.type];
+        if (!spec || spec.isConsumer || b.level >= 3) return 0;
+        return Math.round(spec.cost * (b.level === 1 ? 1.15 : 1.75));
+      }
+
+      function canBuildTypeOnTile(type, gx, gy) {
+        if (gx < 0 || gy < 0 || gx >= state.cols || gy >= state.rows) return false;
+        if (getBuildingAt(gx, gy)) return false;
+        const t = state.grid[gy][gx];
+        const spec = BUILDING_SPECS[type];
+        if (!spec || spec.isConsumer) return false;
+        if (spec.waterOnly) {
+          return t === TERRAIN.RIVER;
+        }
+        return t === TERRAIN.GRASS || t === TERRAIN.SOLAR_GLADE || t === TERRAIN.WIND_HILL;
+      }
+
+      function getTerrainBonusFor(type, gx, gy) {
+        if (gx < 0 || gy < 0 || gx >= state.cols || gy >= state.rows) return 1.0;
+        const t = state.grid[gy][gx];
+        if (type === BTYPE.SOLAR && t === TERRAIN.SOLAR_GLADE) return 1.35;
+        if (type === BTYPE.WIND && t === TERRAIN.WIND_HILL) return 1.35;
+        return 1.0;
+      }
+
+      let bannerTimer = null;
+      function showAlert(msg, variant = 'parchment', durationMs = 3400) {
+        alertBanner.textContent = msg;
+        alertBanner.className = 'show';
+        if (variant === 'leaf') alertBanner.classList.add('alert-leaf');
+        else if (variant === 'sun') alertBanner.classList.add('alert-sun');
+        else if (variant === 'clay') alertBanner.classList.add('alert-clay');
+        if (bannerTimer) clearTimeout(bannerTimer);
+        bannerTimer = setTimeout(() => {
+          alertBanner.classList.remove('show');
+        }, durationMs);
+      }
+
+      function spawnNatureParticles(wx, wy, color, count = 10) {
+        for (let i = 0; i < count; i++) {
+          const ang = Math.random() * Math.PI * 2;
+          const spd = 20 + Math.random() * 65;
+          state.particles.push({
+            x: wx, y: wy,
+            vx: Math.cos(ang) * spd,
+            vy: Math.sin(ang) * spd - 12,
+            color,
+            size: 2.5 + Math.random() * 2.5,
+            life: 0,
+            maxLife: 0.45 + Math.random() * 0.35,
+            kind: 'spark'
+          });
+        }
+      }
+
+      function spawnFloatingText(wx, wy, text, color = '#2b5e22') {
+        state.floatingTexts.push({
+          x: wx, y: wy, text, color, life: 0, maxLife: 1.4
+        });
+      }
+
+      // -----------------------------------------------------------------------
+      // 7. GÉNÉRATION DE LA VALLÉE & FAUNE AMBIANTE
+      // -----------------------------------------------------------------------
+      function initMap(presetIdx, startPlaying = false) {
+        state.presetIndex = presetIdx;
+        const p = MAP_PRESETS[presetIdx];
+        state.preset = p;
+        state.endlessMode = p.sandbox;
+
+        state.cols = p.cols;
+        state.rows = p.rows;
+        state.grid = Array.from({ length: p.rows }, () => Array(p.cols).fill(TERRAIN.GRASS));
+        state.grassVar = Array.from({ length: p.rows }, (_, y) =>
+          Array.from({ length: p.cols }, (_, x) => (x * 7 + y * 13 + ((x * y) % 5)) % 4)
+        );
+
+        // Bordure naturelle de forêts de sapins & chênes sur les bords de la vallée
+        for (let y = 0; y < p.rows; y++) {
+          for (let x = 0; x < p.cols; x++) {
+            const onEdge = x === 0 || y === 0 || x === p.cols - 1 || y === p.rows - 1;
+            const cornerTree = (x <= 1 && y <= 1) || (x >= p.cols - 2 && y <= 1) ||
+                               (x <= 1 && y >= p.rows - 2) || (x >= p.cols - 2 && y >= p.rows - 2);
+            if (onEdge || cornerTree) {
+              state.grid[y][x] = TERRAIN.FOREST;
+            }
+          }
+        }
+
+        // Clairières dorées ensoleillées (+35 % Solaire)
+        for (const [x, y, w, h] of p.solarGlades) {
+          for (let yy = y; yy < Math.min(p.rows - 1, y + h); yy++) {
+            for (let xx = x; xx < Math.min(p.cols - 1, x + w); xx++) {
+              state.grid[yy][xx] = TERRAIN.SOLAR_GLADE;
+            }
+          }
+        }
+
+        // Collines venteuses (+35 % Éolien)
+        for (const [x, y, w, h] of p.windHills) {
+          for (let yy = y; yy < Math.min(p.rows - 1, y + h); yy++) {
+            for (let xx = x; xx < Math.min(p.cols - 1, x + w); xx++) {
+              state.grid[yy][xx] = TERRAIN.WIND_HILL;
+            }
+          }
+        }
+
+        // Rivière bleue sinueuse
+        for (let x = 0; x < p.cols; x++) {
+          const ry = clamp(p.riverFn(x), 2, p.rows - 3);
+          state.grid[ry][x] = TERRAIN.RIVER;
+          // Continuité diagonale pour une rivière bien fluide
+          if (x > 0) {
+            const prevY = clamp(p.riverFn(x - 1), 2, p.rows - 3);
+            if (Math.abs(ry - prevY) >= 1) {
+              state.grid[prevY][x] = TERRAIN.RIVER;
+            }
+          }
+        }
+
+        // Chemins de terre et ponts en bois au-dessus de la rivière
+        for (const c of p.pathCols) {
+          for (let y = 0; y < p.rows; y++) {
+            if (state.grid[y][c] === TERRAIN.RIVER) state.grid[y][c] = TERRAIN.WOOD_BRIDGE;
+            else state.grid[y][c] = TERRAIN.DIRT_PATH;
+          }
+        }
+        for (const r of p.pathRows) {
+          for (let x = 0; x < p.cols; x++) {
+            if (state.grid[r][x] === TERRAIN.RIVER) state.grid[r][x] = TERRAIN.WOOD_BRIDGE;
+            else state.grid[r][x] = TERRAIN.DIRT_PATH;
+          }
+        }
+
+        // Réinitialisation des variables dynamiques
+        state.buildings = [];
+        state.cables = [];
+        state.nextBuildingId = 1;
+        state.particles = [];
+        state.floatingTexts = [];
+        state.credits = p.startCredits;
+        state.incomePerSec = 0;
+        state.maxIncomePerSec = 0;
+        state.stability = 100;
+        state.day = 1;
+        state.timeOfDay = 9.0;
+        state.elapsedTime = 0;
+        state.speed = 1;
+        state.lastSpawnDay = 1;
+        state.cableFromId = null;
+        state.selectedBuildingId = null;
+
+        // Placement des bâtiments initiaux (en s'assurant que la case est libre et propre)
+        const tagToId = {};
+        for (const sb of p.starterBuildings) {
+          const spec = BUILDING_SPECS[sb.type];
+          // Si la rivière passe pile sur un bâtiment de départ non-hydro, on ajuste la case en herbe
+          if (!spec.waterOnly && (state.grid[sb.gy][sb.gx] === TERRAIN.RIVER || state.grid[sb.gy][sb.gx] === TERRAIN.FOREST)) {
+            state.grid[sb.gy][sb.gx] = TERRAIN.GRASS;
+          }
+          const b = {
+            id: state.nextBuildingId++,
+            type: sb.type,
+            gx: sb.gx,
+            gy: sb.gy,
+            rot: 0,
+            level: 1,
+            invested: spec.cost,
+            storedKWh: spec.storage > 0 ? spec.storage * (sb.initCharge || 0) : 0,
+            currentOutKW: 0,
+            currentDemKW: 0,
+            satisfaction: 1,
+            powered: false,
+            connected: false,
+            chargeRateKW: 0,
+            animPhase: Math.random() * 10,
+            revAccum: 0
+          };
+          state.buildings.push(b);
+          if (sb.idTag) tagToId[sb.idTag] = b.id;
+        }
+
+        // Câbles de départ
+        for (const [tA, tB] of p.starterLinks) {
+          if (tagToId[tA] && tagToId[tB]) {
+            state.cables.push({
+              from: tagToId[tA],
+              to: tagToId[tB],
+              energized: true,
+              loadRatio: 0.35,
+              overloaded: false,
+              pulseOffset: Math.random()
+            });
+          }
+        }
+
+        // Génération de la vie ambiante (nuages, oiseaux, papillons, étoiles nocturnes)
+        const worldW = p.cols * TILE_SIZE;
+        const worldH = p.rows * TILE_SIZE;
+
+        state.clouds = Array.from({ length: 6 }, () => ({
+          x: Math.random() * (worldW + 300) - 150,
+          y: Math.random() * worldH,
+          w: 90 + Math.random() * 85,
+          h: 34 + Math.random() * 24,
+          speed: 10 + Math.random() * 12
+        }));
+
+        state.birds = Array.from({ length: 7 }, () => ({
+          x: Math.random() * worldW,
+          y: Math.random() * worldH,
+          vx: (24 + Math.random() * 22) * (Math.random() > 0.5 ? 1 : -1),
+          vy: (Math.random() - 0.5) * 10,
+          phase: Math.random() * 6
+        }));
+
+        state.butterflies = Array.from({ length: 10 }, () => ({
+          x: TILE_SIZE * 2 + Math.random() * (worldW - TILE_SIZE * 4),
+          y: TILE_SIZE * 2 + Math.random() * (worldH - TILE_SIZE * 4),
+          ang: Math.random() * Math.PI * 2,
+          color: ['#f7e37c', '#fffaf0', '#9cd4f5', '#f2b880'][Math.floor(Math.random() * 4)],
+          phase: Math.random() * 10
+        }));
+
+        state.stars = Array.from({ length: 42 }, () => ({
+          x: Math.random(),
+          y: Math.random(),
+          r: 1 + Math.random() * 1.4,
+          phase: Math.random() * 6
+        }));
+
+        centerCamera();
+        closeInspector();
+        document.getElementById('minimapMapTag').textContent = p.id;
+        document.getElementById('pauseMapName').textContent = p.name;
+        document.getElementById('btnSpeed').textContent = 'x1';
+
+        if (startPlaying) {
+          setGameMode('PLAYING');
+          setTool('INSPECT');
+          showAlert(`${p.name} — Reliez la Ferme & la Serre, ou posez une Turbine Hydraulique dans la rivière !`, 'leaf', 4800);
+        } else {
+          setGameMode('MENU');
+        }
+
+        solvePowerGrid(0.016);
+        updateHUD();
+      }
+
+      function centerCamera() {
+        const worldW = state.cols * TILE_SIZE;
+        const worldH = state.rows * TILE_SIZE;
+        state.cam.x = worldW / 2;
+        state.cam.y = worldH / 2;
+        const fitX = (window.innerWidth * 0.88) / worldW;
+        const fitY = (window.innerHeight * 0.74) / worldH;
+        const fit = clamp(Math.min(fitX, fitY), 0.65, 1.35);
+        state.cam.zoom = fit;
+        state.cam.targetZoom = fit;
+      }
+
+      // -----------------------------------------------------------------------
+      // 8. SIMULATION ÉNERGÉTIQUE PAR COMPOSANTES CONNEXES (BFS)
+      // -----------------------------------------------------------------------
+      function solvePowerGrid(dt) {
+        const simDt = dt * state.speed;
+        const hoursDelta = simDt * HOURS_PER_REAL_SEC;
+
+        if (state.mode === 'PLAYING' || state.mode === 'MENU') {
+          state.elapsedTime += simDt;
+          state.timeOfDay += hoursDelta;
+          if (state.timeOfDay >= 24) {
+            state.timeOfDay -= 24;
+            state.day += 1;
+            if (state.mode === 'PLAYING' && state.day - state.lastSpawnDay >= 2) {
+              state.lastSpawnDay = state.day;
+              spawnNewConsumerBuilding();
+            }
+          }
+        }
+
+        // Courbe solaire naturelle (aube 06h, zénith 13h, crépuscule 20h)
+        const h = state.timeOfDay;
+        if (h >= 6 && h <= 20) {
+          state.solarFactor = Math.pow(clamp(Math.sin(((h - 6) / 14) * Math.PI), 0, 1), 0.75);
+        } else {
+          state.solarFactor = 0;
+        }
+
+        // Brise / Vent variable (toujours >= 0.62 pour rester fiable)
+        state.windFactor = clamp(
+          0.96 + 0.34 * Math.sin(state.elapsedTime * 0.08 + 0.9) + 0.14 * Math.cos(state.elapsedTime * 0.19),
+          0.62,
+          1.45
+        );
+
+        state.isNight = (h >= 20.0 || h < 5.5);
+        if (state.isNight) state.weatherLabel = 'Nuit Claire';
+        else if (state.windFactor > 1.22) state.weatherLabel = 'Vent Fort';
+        else if (state.solarFactor > 0.78) state.weatherLabel = 'Grand Soleil';
+        else state.weatherLabel = 'Brise Fraîche';
+
+        // Liste d'adjacence pour le BFS
+        const adj = new Map();
+        for (const b of state.buildings) {
+          adj.set(b.id, []);
+          b.connected = false;
+          b.powered = false;
+          b.satisfaction = 0;
+          b.currentOutKW = 0;
+          b.currentDemKW = 0;
+          b.chargeRateKW = 0;
+        }
+        for (const c of state.cables) {
+          if (adj.has(c.from) && adj.has(c.to)) {
+            adj.get(c.from).push(c.to);
+            adj.get(c.to).push(c.from);
+          }
+          c.energized = false;
+          c.overloaded = false;
+          c.loadRatio = 0;
+        }
+
+        // Parcours BFS par réseau indépendant
+        const visited = new Set();
+        let globalProd = 0;
+        let globalDemand = 0;
+        let globalBatStored = 0;
+        let globalBatCap = 0;
+        let totalIncomePerSec = 0;
+        let connectedUnpoweredCount = 0;
+        let connectedPoweredCount = 0;
+
+        for (const startB of state.buildings) {
+          if (visited.has(startB.id)) continue;
+
+          const comp = [];
+          const queue = [startB];
+          visited.add(startB.id);
+          while (queue.length > 0) {
+            const cur = queue.shift();
+            comp.push(cur);
+            for (const nxtId of adj.get(cur.id)) {
+              if (!visited.has(nxtId)) {
+                visited.add(nxtId);
+                const nb = getBuildingById(nxtId);
+                if (nb) queue.push(nb);
+              }
+            }
+          }
+
+          const compIds = new Set(comp.map((b) => b.id));
+          let compProd = 0;
+          let compDemand = 0;
+          let compBatStored = 0;
+          let compBatCap = 0;
+          let hasPowerOrBat = false;
+          const batteries = [];
+          const consumers = [];
+
+          for (const b of comp) {
+            const spec = BUILDING_SPECS[b.type];
+            const lvlMult = getUpgradeMult(b.level);
+            const bonus = getTerrainBonusFor(b.type, b.gx, b.gy);
+
+            if (spec.baseProd > 0) {
+              hasPowerOrBat = true;
+              let out = spec.baseProd * lvlMult * bonus;
+              if (b.type === BTYPE.SOLAR) out *= state.solarFactor;
+              else if (b.type === BTYPE.WIND) out *= state.windFactor;
+              b.currentOutKW = out;
+              compProd += out;
+            }
+            if (spec.storage > 0) {
+              hasPowerOrBat = true;
+              const cap = spec.storage * lvlMult;
+              b.storedKWh = clamp(b.storedKWh, 0, cap);
+              batteries.push({ b, cap });
+              compBatStored += b.storedKWh;
+              compBatCap += cap;
+            }
+            if (spec.isConsumer) {
+              const nightMult = state.isNight ? 1.2 : 1.0;
+              b.currentDemKW = spec.baseDemand * nightMult;
+              consumers.push(b);
+            }
+          }
+
+          const hasInfra = hasPowerOrBat || comp.some((b) => b.type === BTYPE.PYLON);
+          for (const c of consumers) {
+            if (hasInfra) {
+              c.connected = true;
+              compDemand += c.currentDemKW;
+            }
+          }
+
+          const net = compProd - compDemand;
+          let satisfaction = 1.0;
+          let dischargedKW = 0;
+
+          if (net >= 0) {
+            satisfaction = 1.0;
+            if (batteries.length > 0 && net > 0.01 && hoursDelta > 0) {
+              const totalFree = batteries.reduce((s, x) => s + (x.cap - x.b.storedKWh), 0);
+              if (totalFree > 0.01) {
+                const maxChargeKW = batteries.length * 120;
+                const chargeKW = Math.min(net, maxChargeKW);
+                const addKWh = Math.min(chargeKW * hoursDelta, totalFree);
+                for (const item of batteries) {
+                  const free = item.cap - item.b.storedKWh;
+                  if (free > 0) {
+                    const share = free / totalFree;
+                    item.b.storedKWh += addKWh * share;
+                    item.b.chargeRateKW = (addKWh * share) / Math.max(hoursDelta, 1e-5);
+                  }
+                }
+              }
+            }
+          } else {
+            const deficitKW = -net;
+            if (batteries.length > 0 && compBatStored > 0.01 && hoursDelta > 0) {
+              const maxDischargeKW = batteries.length * 140;
+              const wantKWh = Math.min(deficitKW, maxDischargeKW) * hoursDelta;
+              const actualKWh = Math.min(wantKWh, compBatStored);
+              dischargedKW = actualKWh / hoursDelta;
+              for (const item of batteries) {
+                if (item.b.storedKWh > 0) {
+                  const share = item.b.storedKWh / compBatStored;
+                  const take = actualKWh * share;
+                  item.b.storedKWh = Math.max(0, item.b.storedKWh - take);
+                  item.b.chargeRateKW = -(take / hoursDelta);
+                }
+              }
+            }
+            const suppliedKW = compProd + dischargedKW;
+            satisfaction = compDemand > 0 ? clamp(suppliedKW / compDemand, 0, 1) : 1;
+          }
+
+          let updatedBat = 0;
+          for (const item of batteries) {
+            item.b.powered = compProd > 0 || item.b.storedKWh > 0.5;
+            item.b.satisfaction = satisfaction;
+            updatedBat += item.b.storedKWh;
+          }
+
+          for (const b of comp) {
+            if (!BUILDING_SPECS[b.type].isConsumer && BUILDING_SPECS[b.type].storage === 0) {
+              b.connected = true;
+              b.powered = compProd > 0 || dischargedKW > 0.5;
+              b.satisfaction = satisfaction;
+            }
+          }
+
+          for (const c of consumers) {
+            if (!c.connected) {
+              c.powered = false;
+              c.satisfaction = 0;
+              continue;
+            }
+            c.satisfaction = satisfaction;
+            c.powered = satisfaction >= 0.75;
+            if (c.powered) {
+              connectedPoweredCount++;
+              const revSec = BUILDING_SPECS[c.type].revenue * satisfaction;
+              totalIncomePerSec += revSec;
+              if (state.mode === 'PLAYING') {
+                const earned = revSec * simDt;
+                state.credits += earned;
+                c.revAccum += earned;
+                if (c.revAccum >= 18) {
+                  const amt = Math.round(c.revAccum);
+                  c.revAccum -= amt;
+                  spawnFloatingText(
+                    (c.gx + 0.5) * TILE_SIZE,
+                    c.gy * TILE_SIZE + 6,
+                    `+${amt} €`,
+                    '#f5e396'
+                  );
+                }
+              }
+            } else {
+              connectedUnpoweredCount++;
+            }
+          }
+
+          const compEnergized = compProd > 0.5 || dischargedKW > 0.5;
+          const loadRatio = compDemand > 0 ? clamp(compDemand / Math.max(compProd + dischargedKW, 1), 0, 1.6) : 0.25;
+          const compOverloaded = compDemand > 0 && satisfaction < 0.75;
+          for (const cable of state.cables) {
+            if (compIds.has(cable.from) && compIds.has(cable.to)) {
+              cable.energized = compEnergized;
+              cable.loadRatio = loadRatio;
+              cable.overloaded = compOverloaded;
+            }
+          }
+
+          globalProd += compProd;
+          globalDemand += compDemand;
+          globalBatStored += updatedBat;
+          globalBatCap += compBatCap;
+        }
+
+        state.totalProdKW = globalProd;
+        state.totalDemandKW = globalDemand;
+        state.netKW = globalProd - globalDemand;
+        state.totalBatStored = globalBatStored;
+        state.totalBatCap = globalBatCap;
+        state.incomePerSec = totalIncomePerSec;
+        if (totalIncomePerSec > state.maxIncomePerSec) state.maxIncomePerSec = totalIncomePerSec;
+
+        if (state.mode === 'PLAYING') {
+          if (connectedUnpoweredCount > 0) {
+            const drain = 2.4 + connectedUnpoweredCount * 2.0;
+            state.stability = Math.max(0, state.stability - drain * simDt);
+            if (state.stability < 35 && Math.random() < simDt * 0.42) {
+              showAlert('⚠ Sous-tension sur la vallée ! Ajoutez Éolienne, Hydraulique ou Batterie.', 'clay', 2800);
+            }
+          } else if (connectedPoweredCount > 0) {
+            state.stability = Math.min(100, state.stability + 2.5 * simDt);
+          }
+
+          if (state.endlessMode && state.stability < 15) state.stability = 15;
+
+          if (!state.endlessMode && state.stability <= 0) {
+            triggerGameOver();
+          }
+          if (!state.endlessMode && state.preset.goalCredits > 0 && state.credits >= state.preset.goalCredits) {
+            triggerVictory();
+          }
+        }
+      }
+
+      // Apparition d'un nouveau bâtiment consommateur tous les 2 jours
+      function spawnNewConsumerBuilding() {
+        const candidates = [];
+        for (let y = 2; y < state.rows - 2; y++) {
+          for (let x = 2; x < state.cols - 2; x++) {
+            if (state.grid[y][x] === TERRAIN.GRASS && !getBuildingAt(x, y)) {
+              candidates.push({ gx: x, gy: y });
+            }
+          }
+        }
+        if (candidates.length === 0) return;
+
+        const pick = candidates[Math.floor(Math.random() * candidates.length)];
+        const roll = Math.random();
+        let type = BTYPE.HOUSE;
+        if (state.day >= 5 && roll > 0.66) type = BTYPE.GREENHOUSE;
+        else if (roll > 0.36) type = BTYPE.FARM;
+
+        state.buildings.push({
+          id: state.nextBuildingId++,
+          type,
+          gx: pick.gx,
+          gy: pick.gy,
+          rot: 0,
+          level: 1,
+          invested: 0,
+          storedKWh: 0,
+          currentOutKW: 0,
+          currentDemKW: 0,
+          satisfaction: 0,
+          powered: false,
+          connected: false,
+          chargeRateKW: 0,
+          animPhase: 0,
+          revAccum: 0
+        });
+
+        spawnNatureParticles((pick.gx + 0.5) * TILE_SIZE, (pick.gy + 0.5) * TILE_SIZE, '#f2c75c', 14);
+        audio.chime();
+        showAlert(
+          `Nouveau voisin dans la vallée : ${BUILDING_SPECS[type].name} (+${BUILDING_SPECS[type].revenue} €/s) !`,
+          'sun',
+          4600
+        );
+      }
+
+      // -----------------------------------------------------------------------
+      // 9. ACTIONS DU JOUEUR (POSER, AUTO-CÂBLE, CÂBLE, AMÉLIORER, VENDRE)
+      // -----------------------------------------------------------------------
+      function placeBuilding(type, gx, gy) {
+        const spec = BUILDING_SPECS[type];
+        if (!spec || spec.isConsumer) return;
+        if (!canBuildTypeOnTile(type, gx, gy)) {
+          audio.error();
+          if (spec.waterOnly) {
+            showAlert('La Turbine Hydraulique se place uniquement sur une case de rivière !', 'clay', 2400);
+          } else {
+            showAlert('Impossible de construire sur cette case (forêt, rivière ou chemin).', 'clay', 1800);
+          }
+          return;
+        }
+        if (state.credits < spec.cost) {
+          audio.error();
+          showAlert(`Crédits insuffisants (${fmtEuro(spec.cost)} requis).`, 'clay', 1800);
+          return;
+        }
+
+        state.credits -= spec.cost;
+        const b = {
+          id: state.nextBuildingId++,
+          type,
+          gx,
+          gy,
+          rot: state.rotation,
+          level: 1,
+          invested: spec.cost,
+          storedKWh: 0,
+          currentOutKW: 0,
+          currentDemKW: 0,
+          satisfaction: 1,
+          powered: true,
+          connected: false,
+          chargeRateKW: 0,
+          animPhase: Math.random() * 6,
+          revAccum: 0
+        };
+        state.buildings.push(b);
+
+        // Connexion automatique optionnelle (<= 2,5 cases)
+        if (state.autoLink) {
+          const neighbors = state.buildings
+            .filter((o) => o.id !== b.id && distTiles(b, o) <= AUTO_LINK_RANGE)
+            .sort((a, c) => distTiles(b, a) - distTiles(b, c))
+            .slice(0, 4);
+          for (const nb of neighbors) {
+            if (!hasCableBetween(b.id, nb.id)) {
+              state.cables.push({
+                from: b.id,
+                to: nb.id,
+                energized: true,
+                loadRatio: 0.3,
+                overloaded: false,
+                pulseOffset: Math.random()
+              });
+            }
+          }
+        }
+
+        const wx = (gx + 0.5) * TILE_SIZE;
+        const wy = (gy + 0.5) * TILE_SIZE;
+        spawnNatureParticles(wx, wy, spec.waterOnly ? '#a8daf2' : '#d6e8b8', 12);
+        spawnFloatingText(wx, wy - 10, `-${spec.cost} €`, '#fce2a9');
+
+        if (getTerrainBonusFor(type, gx, gy) > 1.0) {
+          spawnFloatingText(wx, wy - 28, '+35 % BONUS !', '#d4f7b7');
+        }
+
+        if (spec.waterOnly) audio.placeWater();
+        else audio.place();
+
+        solvePowerGrid(0.001);
+        updateHUD();
+      }
+
+      function handleCableClick(gx, gy) {
+        const b = getBuildingAt(gx, gy);
+        if (!b) {
+          state.cableFromId = null;
+          return;
+        }
+        if (state.cableFromId === null) {
+          state.cableFromId = b.id;
+          audio.click();
+          showAlert(`Câble : cliquez sur le bâtiment à relier depuis ${BUILDING_SPECS[b.type].shortName}`, 'parchment', 2200);
+          return;
+        }
+        if (state.cableFromId === b.id) {
+          state.cableFromId = null;
+          audio.click();
+          return;
+        }
+
+        const fromB = getBuildingById(state.cableFromId);
+        if (!fromB) {
+          state.cableFromId = null;
+          return;
+        }
+
+        const dist = distTiles(fromB, b);
+        const maxR = getMaxCableRange(fromB, b);
+        if (dist > maxR) {
+          audio.error();
+          showAlert(`Trop éloigné (${dist.toFixed(1)} > ${maxR.toFixed(1)} cases) — utilisez un Pylône en bois !`, 'clay', 2400);
+          return;
+        }
+        if (hasCableBetween(fromB.id, b.id)) {
+          audio.error();
+          showAlert('Ces deux bâtiments sont déjà reliés.', 'sun', 1600);
+          state.cableFromId = null;
+          return;
+        }
+        if (state.credits < CABLE_COST) {
+          audio.error();
+          showAlert(`Crédits insuffisants (${CABLE_COST} € requis).`, 'clay', 1600);
+          return;
+        }
+
+        state.credits -= CABLE_COST;
+        state.cables.push({
+          from: fromB.id,
+          to: b.id,
+          energized: true,
+          loadRatio: 0.3,
+          overloaded: false,
+          pulseOffset: 0
+        });
+
+        const mx = ((fromB.gx + b.gx) * 0.5 + 0.5) * TILE_SIZE;
+        const my = ((fromB.gy + b.gy) * 0.5 + 0.5) * TILE_SIZE;
+        spawnNatureParticles(mx, my, '#f2c75c', 8);
+        spawnFloatingText(mx, my - 8, `-${CABLE_COST} €`, '#fce2a9');
+        audio.cable();
+
+        state.cableFromId = null;
+        solvePowerGrid(0.001);
+        updateHUD();
+      }
+
+      function upgradeBuilding(b) {
+        const spec = BUILDING_SPECS[b.type];
+        if (!spec || spec.isConsumer || b.level >= 3) return;
+        const cost = getUpgradeCost(b);
+        if (state.credits < cost) {
+          audio.error();
+          showAlert(`Crédits insuffisants (${fmtEuro(cost)} requis).`, 'clay', 1800);
+          return;
+        }
+        state.credits -= cost;
+        b.level += 1;
+        b.invested += cost;
+
+        const wx = (b.gx + 0.5) * TILE_SIZE;
+        const wy = (b.gy + 0.5) * TILE_SIZE;
+        spawnNatureParticles(wx, wy, '#f2c75c', 16);
+        spawnFloatingText(wx, wy - 14, `NIV. ${b.level} !`, '#d4f7b7');
+        audio.upgrade();
+        solvePowerGrid(0.001);
+        refreshInspector();
+        updateHUD();
+      }
+
+      function sellBuilding(b) {
+        const spec = BUILDING_SPECS[b.type];
+        if (spec.isConsumer) {
+          audio.error();
+          showAlert('Ce bâtiment de la vallée ne peut pas être démoli.', 'sun', 1800);
+          return;
+        }
+        const refund = Math.round(b.invested * 0.7);
+        state.credits += refund;
+        state.buildings = state.buildings.filter((x) => x.id !== b.id);
+        state.cables = state.cables.filter((c) => c.from !== b.id && c.to !== b.id);
+        if (state.selectedBuildingId === b.id) closeInspector();
+        if (state.cableFromId === b.id) state.cableFromId = null;
+
+        const wx = (b.gx + 0.5) * TILE_SIZE;
+        const wy = (b.gy + 0.5) * TILE_SIZE;
+        spawnNatureParticles(wx, wy, '#d6b489', 12);
+        spawnFloatingText(wx, wy - 10, `+${refund} €`, '#fce2a9');
+        audio.sell();
+        solvePowerGrid(0.001);
+        updateHUD();
+      }
+
+      function trySellCableAtWorld(wx, wy) {
+        let bestIdx = -1;
+        let bestDist = 14;
+        for (let i = 0; i < state.cables.length; i++) {
+          const c = state.cables[i];
+          const a = getBuildingById(c.from);
+          const b = getBuildingById(c.to);
+          if (!a || !b) continue;
+          const ax = (a.gx + 0.5) * TILE_SIZE, ay = (a.gy + 0.5) * TILE_SIZE;
+          const bx = (b.gx + 0.5) * TILE_SIZE, by = (b.gy + 0.5) * TILE_SIZE;
+          const d = distPointToSegment(wx, wy, ax, ay, bx, by);
+          if (d < bestDist) {
+            bestDist = d;
+            bestIdx = i;
+          }
+        }
+        if (bestIdx >= 0) {
+          state.cables.splice(bestIdx, 1);
+          state.credits += 10;
+          spawnNatureParticles(wx, wy, '#d6b489', 7);
+          spawnFloatingText(wx, wy - 8, '+10 €', '#fce2a9');
+          audio.sell();
+          solvePowerGrid(0.001);
+          updateHUD();
+          return true;
+        }
+        return false;
+      }
+
+      function distPointToSegment(px, py, x1, y1, x2, y2) {
+        const dx = x2 - x1, dy = y2 - y1;
+        const len2 = dx * dx + dy * dy;
+        if (len2 === 0) return Math.hypot(px - x1, py - y1);
+        const t = clamp(((px - x1) * dx + (py - y1) * dy) / len2, 0, 1);
+        return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+      }
+
+      // -----------------------------------------------------------------------
+      // 10. INTERFACE UTILISATEUR (DOCK, HUD, INSPECTEUR, MODALES)
+      // -----------------------------------------------------------------------
+      function buildDockUI() {
+        buildDock.innerHTML = '';
+        for (const t of TOOLS) {
+          const btn = document.createElement('button');
+          btn.className = 'dock-item' + (t.cls ? ' ' + t.cls : '');
+          btn.dataset.tool = t.id;
+          btn.title = t.hint;
+
+          const iconCanvas = document.createElement('canvas');
+          iconCanvas.width = 16;
+          iconCanvas.height = 16;
+          iconCanvas.className = 'dock-icon';
+          const ic = iconCanvas.getContext('2d');
+          ic.imageSmoothingEnabled = false;
+          if (SPRITES[t.sprite]) ic.drawImage(SPRITES[t.sprite], 0, 0);
+
+          btn.innerHTML = `<span class="dock-key">${t.key}</span>`;
+          btn.appendChild(iconCanvas);
+          btn.innerHTML += `
+            <span class="dock-name">${t.label}</span>
+            <span class="dock-cost">${t.costText}</span>
+            <span class="dock-meta">${t.meta}</span>
+          `;
+
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            audio.click();
+            setTool(t.id);
+          });
+          buildDock.appendChild(btn);
+        }
+      }
+
+      function setTool(toolId) {
+        state.tool = toolId;
+        state.cableFromId = null;
+        document.querySelectorAll('.dock-item').forEach((el) => {
+          el.classList.toggle('selected', el.dataset.tool === toolId);
+        });
+        const def = TOOLS.find((t) => t.id === toolId);
+        if (def) toolHintBar.textContent = def.hint;
+        if (toolId !== 'INSPECT') closeInspector();
+      }
+
+      function openInspector(b) {
+        state.selectedBuildingId = b.id;
+        inspectorPanel.classList.add('open');
+        refreshInspector();
+      }
+
+      function closeInspector() {
+        state.selectedBuildingId = null;
+        inspectorPanel.classList.remove('open');
+      }
+
+      function refreshInspector() {
+        if (state.selectedBuildingId === null) return;
+        const b = getBuildingById(state.selectedBuildingId);
+        if (!b) { closeInspector(); return; }
+        const spec = BUILDING_SPECS[b.type];
+
+        const pctx = inspPreviewCanvas.getContext('2d');
+        pctx.clearRect(0, 0, 16, 16);
+        pctx.imageSmoothingEnabled = false;
+        const spr = SPRITES[b.type];
+        if (spr) pctx.drawImage(spr, 0, 0);
+
+        inspName.textContent = spec.name;
+        inspLevel.textContent = spec.isConsumer ? 'BÂTIMENT DE LA VALLÉE' : `NIVEAU ${b.level} / 3`;
+
+        let statusText = 'ACTIF';
+        let statusBg = 'rgba(108, 168, 83, 0.28)';
+        let statusBorder = '#86c46a';
+        if (spec.isConsumer) {
+          if (!b.connected) { statusText = 'NON RACCORDÉ'; statusBg = 'rgba(217, 135, 54, 0.28)'; statusBorder = '#e5b248'; }
+          else if (b.powered) { statusText = 'ALIMENTÉ'; }
+          else { statusText = 'SOUS-TENSION'; statusBg = 'rgba(204, 89, 67, 0.35)'; statusBorder = '#e88b79'; }
+        } else if (spec.storage > 0) {
+          if (b.chargeRateKW > 0.5) { statusText = 'EN CHARGE'; statusBg = 'rgba(74, 150, 199, 0.3)'; statusBorder = '#89c4e8'; }
+          else if (b.chargeRateKW < -0.5) { statusText = 'DÉCHARGE'; statusBg = 'rgba(217, 135, 54, 0.3)'; statusBorder = '#e5b248'; }
+          else statusText = 'EN VEILLE';
+        } else if (b.type === BTYPE.SOLAR && state.solarFactor < 0.05) {
+          statusText = 'NUIT (0 kW)'; statusBg = 'rgba(65, 89, 135, 0.38)'; statusBorder = '#95b2e0';
+        }
+        inspStatus.textContent = statusText;
+        inspStatus.style.background = statusBg;
+        inspStatus.style.borderColor = statusBorder;
+
+        const rows = [];
+        const bonus = getTerrainBonusFor(b.type, b.gx, b.gy);
+        const cableCount = state.cables.filter((c) => c.from === b.id || c.to === b.id).length;
+
+        if (spec.baseProd > 0) {
+          rows.push(['Production actuelle', `<span style="color:#a8e089">${b.currentOutKW.toFixed(1)} kW</span>`]);
+          rows.push(['Puissance nominale', `${(spec.baseProd * getUpgradeMult(b.level) * bonus).toFixed(0)} kW`]);
+        }
+        if (spec.storage > 0) {
+          const cap = spec.storage * getUpgradeMult(b.level);
+          const pct = Math.round((b.storedKWh / cap) * 100);
+          rows.push(['Stockage', `<span style="color:#9ad3f2">${b.storedKWh.toFixed(0)} / ${cap.toFixed(0)} kWh (${pct}%)</span>`]);
+          rows.push(['Flux actuel', `${b.chargeRateKW >= 0 ? '+' : ''}${b.chargeRateKW.toFixed(1)} kW`]);
+        }
+        if (spec.isConsumer) {
+          rows.push(['Demande actuelle', `<span style="color:#f5cf84">${b.currentDemKW.toFixed(1)} kW</span>`]);
+          rows.push(['Revenu généré', `<span style="color:#a8e089">${b.powered ? '+' + (spec.revenue * b.satisfaction).toFixed(0) : '0'} €/s</span>`]);
+          rows.push(['Couverture', `${Math.round(b.satisfaction * 100)} %`]);
+        }
+        if (b.type === BTYPE.PYLON) {
+          rows.push(['Portée câble', `${PYLON_CABLE_RANGE.toFixed(1)} cases`]);
+        }
+        if (bonus > 1.0) {
+          rows.push(['Bonus terrain', `<span style="color:#f2c75c">+35 % ACTIF</span>`]);
+        }
+        rows.push(['Câbles reliés', `${cableCount}`]);
+
+        inspStats.innerHTML = rows
+          .map(([k, v]) => `<div class="insp-row"><span>${k}</span><span>${v}</span></div>`)
+          .join('');
+
+        inspActions.innerHTML = '';
+        if (!spec.isConsumer) {
+          if (b.level < 3) {
+            const upCost = getUpgradeCost(b);
+            const btnUp = document.createElement('button');
+            btnUp.className = 'eco-btn leaf';
+            btnUp.disabled = state.credits < upCost;
+            btnUp.textContent = `▲ AMÉLIORER NIV.${b.level + 1} (${fmtEuro(upCost)})`;
+            btnUp.addEventListener('click', (e) => { e.stopPropagation(); upgradeBuilding(b); });
+            inspActions.appendChild(btnUp);
+          } else {
+            const maxDiv = document.createElement('div');
+            maxDiv.style.cssText = 'text-align:center;font-family:var(--font-display);font-size:12px;color:var(--gold-sun);padding:6px;border:1px dashed var(--gold-sun);border-radius:8px;';
+            maxDiv.textContent = '★ NIVEAU MAXIMUM ATTEINT';
+            inspActions.appendChild(maxDiv);
+          }
+
+          const btnLink = document.createElement('button');
+          btnLink.className = 'eco-btn river';
+          btnLink.textContent = '🔗 RELIER UN CÂBLE (15 €)';
+          btnLink.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeInspector();
+            setTool('CABLE');
+            state.cableFromId = b.id;
+            showAlert(`Câble : choisissez le bâtiment cible depuis ${spec.shortName}`, 'parchment', 2400);
+          });
+          inspActions.appendChild(btnLink);
+
+          const refund = Math.round(b.invested * 0.7);
+          const btnSell = document.createElement('button');
+          btnSell.className = 'eco-btn clay';
+          btnSell.textContent = `✕ VENDRE (+${fmtEuro(refund)})`;
+          btnSell.addEventListener('click', (e) => { e.stopPropagation(); sellBuilding(b); });
+          inspActions.appendChild(btnSell);
+        } else {
+          const btnLink = document.createElement('button');
+          btnLink.className = 'eco-btn river';
+          btnLink.textContent = '🔗 RACCORDER AU RÉSEAU (15 €)';
+          btnLink.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeInspector();
+            setTool('CABLE');
+            state.cableFromId = b.id;
+            showAlert(`Câble : reliez ${spec.shortName} à un Pylône ou producteur !`, 'parchment', 2600);
+          });
+          inspActions.appendChild(btnLink);
+        }
+      }
+
+      function updateHUD() {
+        document.getElementById('hudCredits').textContent = fmtEuro(state.credits);
+        document.getElementById('hudIncome').textContent = `+${state.incomePerSec.toFixed(0)} €/s`;
+        document.getElementById('hudGoalTag').textContent = state.endlessMode
+          ? 'MODE LIBRE'
+          : `OBJ ${fmtEuro(state.preset.goalCredits)}`;
+
+        document.getElementById('hudPower').textContent = `${Math.round(state.totalProdKW)} / ${Math.round(state.totalDemandKW)} kW`;
+        const netRound = Math.round(state.netKW);
+        const hudNet = document.getElementById('hudNet');
+        hudNet.textContent = `${netRound >= 0 ? '+' : ''}${netRound} kW`;
+        hudNet.style.color = netRound >= 0 ? '#9be082' : '#f09484';
+
+        const pRatio = state.totalDemandKW > 0
+          ? clamp(state.totalProdKW / state.totalDemandKW, 0, 1)
+          : (state.totalProdKW > 0 ? 1 : 0);
+        const barPower = document.getElementById('barPower');
+        barPower.style.width = `${Math.round(pRatio * 100)}%`;
+        barPower.style.background = netRound >= 0 ? '#7bc25d' : '#e09a43';
+
+        const batPct = state.totalBatCap > 0 ? Math.round((state.totalBatStored / state.totalBatCap) * 100) : 0;
+        document.getElementById('hudBattery').textContent = `${Math.round(state.totalBatStored)} / ${Math.round(state.totalBatCap)} kWh`;
+        document.getElementById('hudBatPct').textContent = `${batPct}%`;
+        const barBat = document.getElementById('barBattery');
+        barBat.style.width = `${batPct}%`;
+        barBat.style.background = batPct > 25 ? '#4a96c7' : '#d98736';
+
+        const stab = Math.round(state.stability);
+        document.getElementById('hudStability').textContent = `${stab}%`;
+        const stabState = document.getElementById('hudStabilityState');
+        const barStab = document.getElementById('barStability');
+        barStab.style.width = `${stab}%`;
+        if (stab >= 70) {
+          stabState.textContent = 'STABLE';
+          stabState.style.color = '#9be082';
+          barStab.style.background = '#6ca853';
+        } else if (stab >= 35) {
+          stabState.textContent = 'TENDU';
+          stabState.style.color = '#f2c75c';
+          barStab.style.background = '#d98736';
+        } else {
+          stabState.textContent = 'CRITIQUE';
+          stabState.style.color = '#f59c8c';
+          barStab.style.background = '#cc5943';
+        }
+
+        const hh = Math.floor(state.timeOfDay).toString().padStart(2, '0');
+        const mm = Math.floor((state.timeOfDay % 1) * 60).toString().padStart(2, '0');
+        document.getElementById('hudDayClock').textContent = `JOUR ${state.day} — ${hh}:${mm}`;
+        document.getElementById('badgeNight').classList.toggle('show', state.isNight);
+        document.getElementById('hudWeather').textContent = `☀ ${Math.round(state.solarFactor * 100)}%  |  ≋ ${Math.round(state.windFactor * 100)}%`;
+        document.getElementById('hudWeatherText').textContent = state.weatherLabel;
+
+        if (state.selectedBuildingId !== null) refreshInspector();
+      }
+
+      function setGameMode(newMode) {
+        state.mode = newMode;
+        mainMenuOverlay.classList.toggle('open', newMode === 'MENU');
+        pauseOverlay.classList.toggle('open', newMode === 'PAUSED');
+        victoryOverlay.classList.toggle('open', newMode === 'VICTORY');
+        gameoverOverlay.classList.toggle('open', newMode === 'GAMEOVER');
+
+        const showHud = newMode === 'PLAYING' || newMode === 'PAUSED';
+        hudTop.classList.toggle('hidden', !showHud);
+        buildDockWrap.classList.toggle('hidden', !showHud);
+        minimapBox.classList.toggle('hidden', !showHud);
+        if (newMode !== 'PLAYING') closeInspector();
+      }
+
+      function buildSummaryHTML() {
+        const count = state.buildings.filter((b) => !BUILDING_SPECS[b.type].isConsumer).length;
+        return `
+          <div class="summary-stat"><div class="s-label">Jours écoulés</div><div class="s-val">${state.day}</div></div>
+          <div class="summary-stat"><div class="s-label">Revenu max</div><div class="s-val">+${Math.round(state.maxIncomePerSec)} €/s</div></div>
+          <div class="summary-stat"><div class="s-label">Installations</div><div class="s-val">${count}</div></div>
+        `;
+      }
+
+      function triggerVictory() {
+        document.getElementById('victoryStats').innerHTML = buildSummaryHTML();
+        audio.victory();
+        setGameMode('VICTORY');
+      }
+
+      function triggerGameOver() {
+        document.getElementById('gameoverStats').innerHTML = buildSummaryHTML();
+        audio.gameover();
+        setGameMode('GAMEOVER');
+      }
+
+      // -----------------------------------------------------------------------
+      // 11. MOTEUR DE RENDU 100 % NATURE & PIXEL ART (ZÉRO NÉON)
+      // -----------------------------------------------------------------------
+      let dpr = 1;
+      function resizeCanvas() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(window.innerWidth * dpr);
+        canvas.height = Math.floor(window.innerHeight * dpr);
+      }
+
+      function screenToWorld(sx, sy) {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        return {
+          x: (sx - cx) / state.cam.zoom + state.cam.x,
+          y: (sy - cy) / state.cam.zoom + state.cam.y
+        };
+      }
+
+      function renderWorld(nowSec) {
+        ctx.save();
+        ctx.scale(dpr, dpr);
+        ctx.imageSmoothingEnabled = false;
+
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        // Fond forestier dense et chaleureux tout autour de la carte
+        ctx.fillStyle = '#365e30';
+        ctx.fillRect(0, 0, vw, vh);
+
+        // Transformation caméra
+        ctx.translate(vw / 2, vh / 2);
+        ctx.scale(state.cam.zoom, state.cam.zoom);
+        ctx.translate(-state.cam.x, -state.cam.y);
+
+        const worldW = state.cols * TILE_SIZE;
+        const worldH = state.rows * TILE_SIZE;
+
+        // 1) Extension de la forêt au-delà des bords visibles pour un décor naturel immersif
+        const minVisX = Math.floor((state.cam.x - vw / (2 * state.cam.zoom)) / TILE_SIZE) - 1;
+        const maxVisX = Math.ceil((state.cam.x + vw / (2 * state.cam.zoom)) / TILE_SIZE) + 1;
+        const minVisY = Math.floor((state.cam.y - vh / (2 * state.cam.zoom)) / TILE_SIZE) - 1;
+        const maxVisY = Math.ceil((state.cam.y + vh / (2 * state.cam.zoom)) / TILE_SIZE) + 1;
+
+        for (let y = minVisY; y <= maxVisY; y++) {
+          for (let x = minVisX; x <= maxVisX; x++) {
+            if (x >= 0 && y >= 0 && x < state.cols && y < state.rows) continue;
+            const fVar = Math.abs((x * 5 + y * 11)) % 2;
+            ctx.drawImage(TILES['FOREST_' + fVar], x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+          }
+        }
+
+        // 2) Tuiles de la vallée (prairies, clairières, collines, rivière, ponts, forêts)
+        const riverFrame = Math.floor(nowSec * 2.0) % 2;
+        for (let y = 0; y < state.rows; y++) {
+          for (let x = 0; x < state.cols; x++) {
+            const t = state.grid[y][x];
+            const px = x * TILE_SIZE;
+            const py = y * TILE_SIZE;
+            let img = TILES['GRASS_' + state.grassVar[y][x]];
+
+            if (t === TERRAIN.FOREST) {
+              img = TILES['FOREST_' + ((x + y) % 2)];
+            } else if (t === TERRAIN.SOLAR_GLADE) {
+              img = TILES[TERRAIN.SOLAR_GLADE];
+            } else if (t === TERRAIN.WIND_HILL) {
+              img = TILES[TERRAIN.WIND_HILL];
+            } else if (t === TERRAIN.RIVER) {
+              img = TILES['RIVER_' + riverFrame];
+            } else if (t === TERRAIN.WOOD_BRIDGE) {
+              img = TILES[TERRAIN.WOOD_BRIDGE];
+            } else if (t === TERRAIN.DIRT_PATH) {
+              const ud = (y > 0 && (state.grid[y - 1][x] === TERRAIN.DIRT_PATH || state.grid[y - 1][x] === TERRAIN.WOOD_BRIDGE)) ||
+                         (y < state.rows - 1 && (state.grid[y + 1][x] === TERRAIN.DIRT_PATH || state.grid[y + 1][x] === TERRAIN.WOOD_BRIDGE));
+              const lr = (x > 0 && (state.grid[y][x - 1] === TERRAIN.DIRT_PATH || state.grid[y][x - 1] === TERRAIN.WOOD_BRIDGE)) ||
+                         (x < state.cols - 1 && (state.grid[y][x + 1] === TERRAIN.DIRT_PATH || state.grid[y][x + 1] === TERRAIN.WOOD_BRIDGE));
+              if (ud && lr) img = TILES.PATH_X;
+              else if (lr) img = TILES.PATH_H;
+              else img = TILES.PATH_V;
+            }
+
+            ctx.drawImage(img, px, py, TILE_SIZE, TILE_SIZE);
+
+            // Léger souffle d'air discret sur les collines venteuses
+            if (t === TERRAIN.WIND_HILL) {
+              const drift = ((nowSec * 28 * state.windFactor + x * 19 + y * 11) % (TILE_SIZE - 8));
+              ctx.fillStyle = 'rgba(245, 250, 235, 0.28)';
+              ctx.fillRect(px + drift, py + 14 + (y % 2) * 14, 9, 2);
+            }
+          }
+        }
+
+        // Légère clôture boisée discrète encadrant la zone jouable
+        ctx.strokeStyle = 'rgba(74, 53, 37, 0.72)';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(0, 0, worldW, worldH);
+
+        // 3) Papillons au-dessus des prairies en journée
+        if (state.solarFactor > 0.15) {
+          for (const bf of state.butterflies) {
+            const wing = Math.sin(nowSec * 14 + bf.phase) > 0 ? 3 : 1;
+            ctx.fillStyle = bf.color;
+            ctx.fillRect(Math.round(bf.x - wing), Math.round(bf.y), wing, 2);
+            ctx.fillRect(Math.round(bf.x + 1), Math.round(bf.y), wing, 2);
+          }
+        }
+
+        // 4) Bâtiments Pixel-Art (avec ombre portée douce au sol)
+        for (const b of state.buildings) {
+          const spec = BUILDING_SPECS[b.type];
+          const px = b.gx * TILE_SIZE;
+          const py = b.gy * TILE_SIZE;
+          const cx = px + TILE_SIZE / 2;
+          const cy = py + TILE_SIZE / 2;
+
+          // Ombre douce au sol
+          ctx.fillStyle = 'rgba(24, 38, 22, 0.24)';
+          ctx.beginPath();
+          ctx.ellipse(cx + 2, py + TILE_SIZE - 5, TILE_SIZE * 0.36, 6, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.save();
+          ctx.translate(cx, cy);
+          if (b.rot) ctx.rotate((b.rot * Math.PI) / 2);
+
+          if (b.type === BTYPE.WIND) {
+            ctx.drawImage(SPRITES.WIND_BASE, -TILE_SIZE / 2, -TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+            const rSpeed = 5.5 * state.windFactor * getUpgradeMult(b.level);
+            const frame = Math.floor(nowSec * rSpeed + b.animPhase) % 4;
+            ctx.drawImage(SPRITES.WIND_ROTORS[frame], -TILE_SIZE / 2, -TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+          } else if (b.type === BTYPE.HYDRO) {
+            const hFrame = Math.floor(nowSec * (3.8 * getUpgradeMult(b.level)) + b.animPhase) % 2;
+            ctx.drawImage(SPRITES['HYDRO_' + hFrame], -TILE_SIZE / 2, -TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+          } else if (b.type === BTYPE.BATTERY) {
+            ctx.drawImage(SPRITES.BATTERY_SHELL, -TILE_SIZE / 2, -TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+            const cap = spec.storage * getUpgradeMult(b.level);
+            const ratio = clamp(b.storedKWh / Math.max(cap, 1), 0, 1);
+            const scale = TILE_SIZE / 16;
+            const barW = Math.round(8 * scale * ratio);
+            if (barW > 0) {
+              const barColor = ratio > 0.55 ? '#7ec75a' : (ratio > 0.22 ? '#e5b248' : '#cc5943');
+              ctx.fillStyle = barColor;
+              ctx.fillRect(-4 * scale, -3 * scale, barW, 2 * scale);
+              ctx.fillRect(-4 * scale, 1 * scale, barW, 2 * scale);
+            }
+          } else {
+            let spr = SPRITES[b.type];
+            if (spec.isConsumer && !b.powered) {
+              spr = SPRITES[b.type + '_OFF'] || spr;
+            }
+            ctx.drawImage(spr, -TILE_SIZE / 2, -TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+          }
+          ctx.restore();
+
+          // Petites étoiles dorées de niveau (Niv. 2 / 3)
+          if (b.level > 1) {
+            for (let lv = 0; lv < b.level; lv++) {
+              ctx.fillStyle = '#3b2a1e';
+              ctx.fillRect(px + 3 + lv * 6, py + 3, 5, 5);
+              ctx.fillStyle = '#f2c75c';
+              ctx.fillRect(px + 4 + lv * 6, py + 4, 3, 3);
+            }
+          }
+
+          // Étiquette parchemin discrète au-dessus des bâtiments consommateurs non reliés ou en sous-tension
+          if (spec.isConsumer) {
+            const bob = Math.sin(nowSec * 3.5 + b.id) * 2.5;
+            if (!b.connected) {
+              ctx.save();
+              ctx.font = '700 10px Fredoka, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillStyle = '#f5eedc';
+              ctx.fillRect(cx - 30, py - 18 + bob, 60, 15);
+              ctx.strokeStyle = '#6d4f37';
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(cx - 30, py - 18 + bob, 60, 15);
+              ctx.fillStyle = '#3b5c2a';
+              ctx.fillText(`+${spec.revenue} €/s`, cx, py - 7 + bob);
+              ctx.restore();
+            } else if (!b.powered) {
+              ctx.save();
+              ctx.font = '700 10px Fredoka, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillStyle = '#fce4de';
+              ctx.fillRect(cx - 36, py - 18 + bob, 72, 15);
+              ctx.strokeStyle = '#cc5943';
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(cx - 36, py - 18 + bob, 72, 15);
+              ctx.fillStyle = '#992d1c';
+              ctx.fillText('⚠ MANQUE kW', cx, py - 7 + bob);
+              ctx.restore();
+            }
+          }
+
+          // Encadrement de sélection (Inspecteur ou Départ câble)
+          if (b.id === state.selectedBuildingId || b.id === state.cableFromId) {
+            ctx.strokeStyle = b.id === state.cableFromId ? '#f2c75c' : '#faf6eb';
+            ctx.lineWidth = 2.5;
+            ctx.strokeRect(px + 1, py + 1, TILE_SIZE - 2, TILE_SIZE - 2);
+          }
+        }
+
+        // 5) Câbles électriques réalistes sombres (légère flèche caténaire, sans glow néon)
+        ctx.save();
+        ctx.lineCap = 'round';
+        for (const c of state.cables) {
+          const a = getBuildingById(c.from);
+          const b = getBuildingById(c.to);
+          if (!a || !b) continue;
+          const ax = (a.gx + 0.5) * TILE_SIZE;
+          const ay = (a.gy + 0.5) * TILE_SIZE - 5;
+          const bx = (b.gx + 0.5) * TILE_SIZE;
+          const by = (b.gy + 0.5) * TILE_SIZE - 5;
+          const dist = Math.hypot(bx - ax, by - ay);
+          const sag = Math.min(18, dist * 0.08);
+          const mx = (ax + bx) * 0.5;
+          const my = (ay + by) * 0.5 + sag;
+
+          // Ombre subtile du câble au sol
+          ctx.strokeStyle = 'rgba(20, 32, 18, 0.22)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(ax, ay + 12);
+          ctx.quadraticCurveTo(mx, my + 12, bx, by + 12);
+          ctx.stroke();
+
+          // Câble principal sombre (ou rouge alerte si surcharge)
+          ctx.strokeStyle = c.overloaded ? '#cc3b2b' : (c.energized ? '#2b2824' : '#635e56');
+          ctx.lineWidth = c.overloaded ? 2.8 : 2.2;
+          ctx.beginPath();
+          ctx.moveTo(ax, ay);
+          ctx.quadraticCurveTo(mx, my, bx, by);
+          ctx.stroke();
+
+          // Petits indicateurs de flux d'énergie subtils (sans glow néon)
+          if (c.energized || c.overloaded) {
+            const count = Math.max(1, Math.floor(dist / 84));
+            const speed = c.overloaded ? 1.1 : 0.55;
+            for (let i = 0; i < count; i++) {
+              const t = (nowSec * speed + c.pulseOffset + i / count) % 1;
+              const inv = 1 - t;
+              const px = inv * inv * ax + 2 * inv * t * mx + t * t * bx;
+              const py = inv * inv * ay + 2 * inv * t * my + t * t * by;
+              ctx.fillStyle = c.overloaded ? '#ffded9' : '#f7e097';
+              ctx.beginPath();
+              ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+        ctx.restore();
+
+        // 6) Particules naturelles (vapeur blanche biomasse, gouttes d'eau, étincelles douces)
+        for (const p of state.particles) {
+          const alpha = clamp(1 - p.life / p.maxLife, 0, 1);
+          ctx.save();
+          ctx.globalAlpha = p.kind === 'steam' ? alpha * 0.55 : alpha * 0.88;
+          ctx.fillStyle = p.color;
+          if (p.kind === 'steam') {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size + p.life * 6, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+          }
+          ctx.restore();
+        }
+
+        // 7) Nuages doux avec légère ombre au sol + oiseaux en vol
+        for (const cl of state.clouds) {
+          // Ombre douce sur les prairies
+          ctx.fillStyle = 'rgba(26, 44, 26, 0.12)';
+          drawCloudShape(cl.x + 26, cl.y + 38, cl.w, cl.h);
+          // Nuage blanc crème léger
+          ctx.fillStyle = state.isNight ? 'rgba(180, 198, 224, 0.14)' : 'rgba(255, 252, 242, 0.24)';
+          drawCloudShape(cl.x, cl.y, cl.w, cl.h);
+        }
+
+        // Oiseaux qui traversent le ciel
+        ctx.strokeStyle = state.isNight ? 'rgba(220, 232, 248, 0.55)' : 'rgba(54, 48, 40, 0.72)';
+        ctx.lineWidth = 1.8;
+        for (const bd of state.birds) {
+          const flap = Math.sin(nowSec * 9 + bd.phase) * 3;
+          ctx.beginPath();
+          ctx.moveTo(bd.x - 5, bd.y + flap);
+          ctx.lineTo(bd.x, bd.y);
+          ctx.lineTo(bd.x + 5, bd.y + flap);
+          ctx.stroke();
+        }
+
+        // 8) Aperçu câble en cours de pose
+        if (state.mode === 'PLAYING' && state.tool === 'CABLE' && state.cableFromId !== null) {
+          const fromB = getBuildingById(state.cableFromId);
+          if (fromB) {
+            const fx = (fromB.gx + 0.5) * TILE_SIZE;
+            const fy = (fromB.gy + 0.5) * TILE_SIZE - 5;
+            const maxR = (fromB.type === BTYPE.PYLON ? PYLON_CABLE_RANGE : NORMAL_CABLE_RANGE) * TILE_SIZE;
+
+            ctx.save();
+            ctx.strokeStyle = 'rgba(245, 238, 220, 0.65)';
+            ctx.setLineDash([6, 6]);
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(fx, fy, maxR, 0, Math.PI * 2);
+            ctx.stroke();
+
+            if (state.hoverTile.gx >= 0) {
+              const targetB = getBuildingAt(state.hoverTile.gx, state.hoverTile.gy);
+              const tx = (state.hoverTile.gx + 0.5) * TILE_SIZE;
+              const ty = (state.hoverTile.gy + 0.5) * TILE_SIZE - 5;
+              const dist = Math.hypot(state.hoverTile.gx - fromB.gx, state.hoverTile.gy - fromB.gy);
+              const effMax = targetB ? getMaxCableRange(fromB, targetB) : (fromB.type === BTYPE.PYLON ? PYLON_CABLE_RANGE : NORMAL_CABLE_RANGE);
+              const valid = targetB && targetB.id !== fromB.id && dist <= effMax && !hasCableBetween(fromB.id, targetB.id);
+
+              ctx.setLineDash([]);
+              ctx.strokeStyle = valid ? '#62bd48' : '#cc4b39';
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+              ctx.moveTo(fx, fy);
+              ctx.lineTo(tx, ty);
+              ctx.stroke();
+
+              ctx.font = '700 11px Fredoka, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillStyle = '#261e16';
+              ctx.fillText(`${dist.toFixed(1)} / ${effMax.toFixed(1)}`, (fx + tx) / 2 + 1, (fy + ty) / 2 - 7);
+              ctx.fillStyle = valid ? '#e2fad6' : '#ffd9d1';
+              ctx.fillText(`${dist.toFixed(1)} / ${effMax.toFixed(1)}`, (fx + tx) / 2, (fy + ty) / 2 - 8);
+            }
+            ctx.restore();
+          }
+        }
+
+        // 9) Aperçu fantôme vert/rouge avant construction
+        if (state.mode === 'PLAYING' && state.hoverTile.gx >= 0 && state.hoverTile.gx < state.cols && state.hoverTile.gy >= 0 && state.hoverTile.gy < state.rows) {
+          const { gx, gy } = state.hoverTile;
+          const px = gx * TILE_SIZE;
+          const py = gy * TILE_SIZE;
+          const cx = px + TILE_SIZE / 2;
+          const cy = py + TILE_SIZE / 2;
+
+          if (BUILDING_SPECS[state.tool]) {
+            const spec = BUILDING_SPECS[state.tool];
+            const ok = canBuildTypeOnTile(state.tool, gx, gy) && state.credits >= spec.cost;
+            const bonus = getTerrainBonusFor(state.tool, gx, gy);
+
+            ctx.save();
+            if (state.tool === BTYPE.PYLON) {
+              ctx.strokeStyle = 'rgba(245, 238, 220, 0.55)';
+              ctx.setLineDash([6, 6]);
+              ctx.lineWidth = 1.8;
+              ctx.beginPath();
+              ctx.arc(cx, cy, PYLON_CABLE_RANGE * TILE_SIZE, 0, Math.PI * 2);
+              ctx.stroke();
+            }
+            if (ok && state.autoLink) {
+              ctx.setLineDash([4, 4]);
+              ctx.strokeStyle = 'rgba(245, 238, 220, 0.8)';
+              ctx.lineWidth = 1.8;
+              const autoLinks = state.buildings
+                .filter((o) => Math.hypot(o.gx - gx, o.gy - gy) <= AUTO_LINK_RANGE)
+                .slice(0, 4);
+              for (const nb of autoLinks) {
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo((nb.gx + 0.5) * TILE_SIZE, (nb.gy + 0.5) * TILE_SIZE);
+                ctx.stroke();
+              }
+            }
+            ctx.restore();
+
+            // Sprite fantôme
+            ctx.save();
+            ctx.globalAlpha = 0.78;
+            ctx.translate(cx, cy);
+            ctx.rotate((state.rotation * Math.PI) / 2);
+            ctx.drawImage(SPRITES[state.tool], -TILE_SIZE / 2, -TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+            ctx.restore();
+
+            // Cadre vert ou rouge
+            ctx.fillStyle = ok ? 'rgba(92, 179, 68, 0.24)' : 'rgba(204, 75, 57, 0.30)';
+            ctx.strokeStyle = ok ? '#54a83d' : '#cc4b39';
+            ctx.lineWidth = 2.5;
+            ctx.fillRect(px + 1, py + 1, TILE_SIZE - 2, TILE_SIZE - 2);
+            ctx.strokeRect(px + 1, py + 1, TILE_SIZE - 2, TILE_SIZE - 2);
+
+            if (ok && bonus > 1.0) {
+              ctx.save();
+              ctx.font = '700 11px Fredoka, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.fillStyle = '#f5eedc';
+              ctx.fillRect(cx - 44, py - 21, 88, 16);
+              ctx.strokeStyle = '#54a83d';
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(cx - 44, py - 21, 88, 16);
+              ctx.fillStyle = '#2d5c20';
+              ctx.fillText('+35 % BONUS !', cx, py - 9);
+              ctx.restore();
+            }
+          } else {
+            ctx.strokeStyle = state.tool === 'SELL' ? '#cc4b39' : 'rgba(245, 238, 220, 0.78)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(px + 1, py + 1, TILE_SIZE - 2, TILE_SIZE - 2);
+          }
+        }
+
+        // 10) Cycle Jour / Nuit naturel (aube dorée, crépuscule ambré, nuit bleutée douce)
+        const h = state.timeOfDay;
+        let tintColor = null;
+        let nightAlpha = 0;
+
+        if (h >= 5.5 && h < 8.5) {
+          // Aube dorée
+          const k = Math.sin(((h - 5.5) / 3) * Math.PI);
+          tintColor = `rgba(255, 198, 115, ${0.18 * k})`;
+        } else if (h >= 17.5 && h < 20.5) {
+          // Crépuscule ambré chaleureux
+          const k = Math.sin(((h - 17.5) / 3) * Math.PI);
+          tintColor = `rgba(232, 132, 68, ${0.24 * k})`;
+        }
+
+        if (h >= 19.5 || h < 6.5) {
+          if (h >= 19.5 && h < 21.5) nightAlpha = ((h - 19.5) / 2) * 0.44;
+          else if (h >= 4.5 && h < 6.5) nightAlpha = ((6.5 - h) / 2) * 0.44;
+          else nightAlpha = 0.44;
+        }
+
+        if (tintColor) {
+          ctx.fillStyle = tintColor;
+          ctx.fillRect(minVisX * TILE_SIZE, minVisY * TILE_SIZE, (maxVisX - minVisX + 2) * TILE_SIZE, (maxVisY - minVisY + 2) * TILE_SIZE);
+        }
+
+        if (nightAlpha > 0.01) {
+          ctx.fillStyle = `rgba(20, 35, 68, ${nightAlpha})`;
+          ctx.fillRect(minVisX * TILE_SIZE, minVisY * TILE_SIZE, (maxVisX - minVisX + 2) * TILE_SIZE, (maxVisY - minVisY + 2) * TILE_SIZE);
+
+          // Douce chaleur jaune des fenêtres allumées la nuit (strictement naturelle, aucun néon)
+          for (const b of state.buildings) {
+            const spec = BUILDING_SPECS[b.type];
+            if (spec.isConsumer && b.powered) {
+              const cx = (b.gx + 0.5) * TILE_SIZE;
+              const cy = (b.gy + 0.5) * TILE_SIZE + 3;
+              const grad = ctx.createRadialGradient(cx, cy, 2, cx, cy, 34);
+              grad.addColorStop(0, `rgba(255, 222, 130, ${0.42 * (nightAlpha / 0.44)})`);
+              grad.addColorStop(1, 'rgba(255, 222, 130, 0)');
+              ctx.fillStyle = grad;
+              ctx.beginPath();
+              ctx.arc(cx, cy, 34, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+
+        // 11) Textes flottants (+€ / Bonus)
+        ctx.save();
+        ctx.font = '700 13px Fredoka, sans-serif';
+        ctx.textAlign = 'center';
+        for (const ft of state.floatingTexts) {
+          const alpha = clamp(1 - ft.life / ft.maxLife, 0, 1);
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = '#241a12';
+          ctx.fillText(ft.text, ft.x + 1, ft.y + 1);
+          ctx.fillStyle = ft.color;
+          ctx.fillText(ft.text, ft.x, ft.y);
+        }
+        ctx.restore();
+
+        ctx.restore(); // Fin de transformation caméra
+
+        // Douces étoiles discrètes dans le haut de l'écran la nuit
+        if (nightAlpha > 0.18) {
+          ctx.save();
+          ctx.scale(dpr, dpr);
+          const starOp = (nightAlpha - 0.18) / 0.26;
+          for (const st of state.stars) {
+            const tw = 0.45 + 0.55 * Math.sin(nowSec * 2 + st.phase);
+            ctx.fillStyle = `rgba(255, 250, 228, ${starOp * tw * 0.55})`;
+            ctx.fillRect(st.x * vw, st.y * vh * 0.28, st.r, st.r);
+          }
+          ctx.restore();
+        }
+      }
+
+      function drawCloudShape(x, y, w, h) {
+        ctx.beginPath();
+        ctx.ellipse(x, y, w * 0.45, h * 0.45, 0, 0, Math.PI * 2);
+        ctx.ellipse(x + w * 0.26, y - h * 0.12, w * 0.35, h * 0.42, 0, 0, Math.PI * 2);
+        ctx.ellipse(x - w * 0.25, y + h * 0.08, w * 0.3, h * 0.36, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // -----------------------------------------------------------------------
+      // 12. MINIMAP INTERACTIVE
+      // -----------------------------------------------------------------------
+      function renderMinimap() {
+        if (state.mode !== 'PLAYING' && state.mode !== 'PAUSED') return;
+        const mw = miniCanvas.width;
+        const mh = miniCanvas.height;
+        mctx.fillStyle = '#385e32';
+        mctx.fillRect(0, 0, mw, mh);
+
+        const cw = mw / state.cols;
+        const ch = mh / state.rows;
+
+        for (let y = 0; y < state.rows; y++) {
+          for (let x = 0; x < state.cols; x++) {
+            const t = state.grid[y][x];
+            if (t === TERRAIN.GRASS) mctx.fillStyle = '#6da64f';
+            else if (t === TERRAIN.FOREST) mctx.fillStyle = '#396330';
+            else if (t === TERRAIN.SOLAR_GLADE) mctx.fillStyle = '#cfd46c';
+            else if (t === TERRAIN.WIND_HILL) mctx.fillStyle = '#8ec776';
+            else if (t === TERRAIN.DIRT_PATH) mctx.fillStyle = '#b89467';
+            else if (t === TERRAIN.RIVER) mctx.fillStyle = '#428ec2';
+            else if (t === TERRAIN.WOOD_BRIDGE) mctx.fillStyle = '#8a5d3b';
+            mctx.fillRect(x * cw, y * ch, cw + 0.5, ch + 0.5);
+          }
+        }
+
+        // Câbles
+        mctx.lineWidth = 1;
+        for (const c of state.cables) {
+          const a = getBuildingById(c.from);
+          const b = getBuildingById(c.to);
+          if (!a || !b) continue;
+          mctx.strokeStyle = c.overloaded ? '#cc3b2b' : '#2b241d';
+          mctx.beginPath();
+          mctx.moveTo((a.gx + 0.5) * cw, (a.gy + 0.5) * ch);
+          mctx.lineTo((b.gx + 0.5) * cw, (b.gy + 0.5) * ch);
+          mctx.stroke();
+        }
+
+        // Bâtiments
+        for (const b of state.buildings) {
+          const spec = BUILDING_SPECS[b.type];
+          mctx.fillStyle = spec.isConsumer && !b.powered ? '#cc3b2b' : spec.mapColor;
+          mctx.fillRect(b.gx * cw, b.gy * ch, Math.max(cw, 3.5), Math.max(ch, 3.5));
+        }
+
+        // Rectangle de la caméra
+        const worldW = state.cols * TILE_SIZE;
+        const worldH = state.rows * TILE_SIZE;
+        const halfW = (window.innerWidth / 2) / state.cam.zoom;
+        const halfH = (window.innerHeight / 2) / state.cam.zoom;
+        const vx = ((state.cam.x - halfW) / worldW) * mw;
+        const vy = ((state.cam.y - halfH) / worldH) * mh;
+        const vw = ((halfW * 2) / worldW) * mw;
+        const vh = ((halfH * 2) / worldH) * mh;
+
+        mctx.strokeStyle = '#faf6eb';
+        mctx.lineWidth = 1.6;
+        mctx.strokeRect(vx, vy, vw, vh);
+      }
+
+      // -----------------------------------------------------------------------
+      // 13. BOUCLE PRINCIPALE
+      // -----------------------------------------------------------------------
+      let lastTs = 0;
+      let hudAccum = 0;
+      let steamAccum = 0;
+
+      function gameLoop(ts) {
+        if (!lastTs) lastTs = ts;
+        const dt = Math.min((ts - lastTs) / 1000, 0.08);
+        lastTs = ts;
+
+        state.cam.zoom += (state.cam.targetZoom - state.cam.zoom) * Math.min(1, dt * 10);
+
+        const worldW = state.cols * TILE_SIZE;
+        const worldH = state.rows * TILE_SIZE;
+
+        if (state.mode === 'PLAYING') {
+          const panSpd = (470 / state.cam.zoom) * dt;
+          if (state.keys['KeyW'] || state.keys['KeyZ'] || state.keys['ArrowUp']) state.cam.y -= panSpd;
+          if (state.keys['KeyS'] || state.keys['ArrowDown']) state.cam.y += panSpd;
+          if (state.keys['KeyA'] || state.keys['KeyQ'] || state.keys['ArrowLeft']) state.cam.x -= panSpd;
+          if (state.keys['KeyD'] || state.keys['ArrowRight']) state.cam.x += panSpd;
+          clampCamera();
+        } else if (state.mode === 'MENU') {
+          state.cam.x = worldW * 0.5 + Math.sin(ts * 0.00022) * 75;
+          state.cam.y = worldH * 0.5 + Math.cos(ts * 0.00018) * 40;
+        }
+
+        if (state.mode === 'PLAYING' || state.mode === 'MENU') {
+          solvePowerGrid(dt);
+        }
+
+        // Mise à jour de la vie ambiante (nuages, oiseaux, papillons)
+        for (const cl of state.clouds) {
+          cl.x += cl.speed * state.windFactor * dt;
+          if (cl.x > worldW + 220) {
+            cl.x = -200;
+            cl.y = Math.random() * worldH;
+          }
+        }
+        for (const bd of state.birds) {
+          bd.x += bd.vx * dt;
+          bd.y += bd.vy * dt + Math.sin(ts * 0.002 + bd.phase) * 0.15;
+          if (bd.x > worldW + 140) bd.x = -120;
+          if (bd.x < -140) bd.x = worldW + 120;
+          if (bd.y > worldH + 100) bd.y = -80;
+          if (bd.y < -100) bd.y = worldH + 80;
+        }
+        for (const bf of state.butterflies) {
+          bf.ang += (Math.random() - 0.5) * 3.2 * dt;
+          bf.x = clamp(bf.x + Math.cos(bf.ang) * 18 * dt, TILE_SIZE, worldW - TILE_SIZE);
+          bf.y = clamp(bf.y + Math.sin(bf.ang) * 18 * dt, TILE_SIZE, worldH - TILE_SIZE);
+        }
+
+        // Légères volutes de vapeur blanche sur les centrales biomasse & écume sur les turbines hydrauliques
+        steamAccum += dt;
+        if (steamAccum >= 0.28) {
+          steamAccum = 0;
+          for (const b of state.buildings) {
+            if (b.type === BTYPE.BIOMASS) {
+              state.particles.push({
+                x: (b.gx + 0.72) * TILE_SIZE,
+                y: (b.gy + 0.06) * TILE_SIZE,
+                vx: 6 * state.windFactor + (Math.random() - 0.5) * 4,
+                vy: -16 - Math.random() * 8,
+                color: '#f5f5f0',
+                size: 3.5,
+                life: 0,
+                maxLife: 1.5,
+                kind: 'steam'
+              });
+            } else if (b.type === BTYPE.HYDRO && Math.random() < 0.6) {
+              state.particles.push({
+                x: (b.gx + 0.5 + (Math.random() - 0.5) * 0.35) * TILE_SIZE,
+                y: (b.gy + 0.85) * TILE_SIZE,
+                vx: 14 + Math.random() * 10,
+                vy: (Math.random() - 0.5) * 6,
+                color: '#e3f7ff',
+                size: 2.2,
+                life: 0,
+                maxLife: 0.65,
+                kind: 'spark'
+              });
+            }
+          }
+        }
+
+        // Particules & textes flottants
+        for (let i = state.particles.length - 1; i >= 0; i--) {
+          const p = state.particles[i];
+          p.life += dt;
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          if (p.kind !== 'steam') { p.vx *= 0.94; p.vy *= 0.94; }
+          if (p.life >= p.maxLife) state.particles.splice(i, 1);
+        }
+        for (let i = state.floatingTexts.length - 1; i >= 0; i--) {
+          const ft = state.floatingTexts[i];
+          ft.life += dt;
+          ft.y -= 26 * dt;
+          if (ft.life >= ft.maxLife) state.floatingTexts.splice(i, 1);
+        }
+
+        renderWorld(ts / 1000);
+        renderMinimap();
+
+        hudAccum += dt;
+        if (hudAccum >= 0.18 && state.mode === 'PLAYING') {
+          hudAccum = 0;
+          updateHUD();
+        }
+
+        requestAnimationFrame(gameLoop);
+      }
+
+      function clampCamera() {
+        const margin = 130;
+        state.cam.x = clamp(state.cam.x, -margin, state.cols * TILE_SIZE + margin);
+        state.cam.y = clamp(state.cam.y, -margin, state.rows * TILE_SIZE + margin);
+      }
+
+      // -----------------------------------------------------------------------
+      // 14. GESTION DES ENTRÉES (SOURIS, TACTILE, CLAVIER, MINIMAP)
+      // -----------------------------------------------------------------------
+      function handleCanvasLeftClick(sx, sy) {
+        if (state.mode !== 'PLAYING') return;
+        const w = screenToWorld(sx, sy);
+        const gx = Math.floor(w.x / TILE_SIZE);
+        const gy = Math.floor(w.y / TILE_SIZE);
+        if (gx < 0 || gy < 0 || gx >= state.cols || gy >= state.rows) return;
+
+        if (BUILDING_SPECS[state.tool]) {
+          placeBuilding(state.tool, gx, gy);
+        } else if (state.tool === 'CABLE') {
+          handleCableClick(gx, gy);
+        } else if (state.tool === 'SELL') {
+          const b = getBuildingAt(gx, gy);
+          if (b) sellBuilding(b);
+          else trySellCableAtWorld(w.x, w.y);
+        } else if (state.tool === 'INSPECT') {
+          const b = getBuildingAt(gx, gy);
+          if (b) {
+            audio.click();
+            openInspector(b);
+          } else {
+            closeInspector();
+          }
+        }
+      }
+
+      canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+      canvas.addEventListener('mousedown', (e) => {
+        if (state.mode !== 'PLAYING') return;
+        if (e.button === 2 || e.button === 1) {
+          state.dragging = true;
+          state.dragMoved = false;
+          state.dragStart = { x: e.clientX, y: e.clientY };
+          state.camStart = { x: state.cam.x, y: state.cam.y };
+        } else if (e.button === 0) {
+          handleCanvasLeftClick(e.clientX, e.clientY);
+        }
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        const w = screenToWorld(e.clientX, e.clientY);
+        state.hoverTile.gx = Math.floor(w.x / TILE_SIZE);
+        state.hoverTile.gy = Math.floor(w.y / TILE_SIZE);
+
+        if (state.dragging) {
+          const dx = e.clientX - state.dragStart.x;
+          const dy = e.clientY - state.dragStart.y;
+          if (Math.hypot(dx, dy) > 5) state.dragMoved = true;
+          state.cam.x = state.camStart.x - dx / state.cam.zoom;
+          state.cam.y = state.camStart.y - dy / state.cam.zoom;
+          clampCamera();
+        }
+      });
+
+      window.addEventListener('mouseup', (e) => {
+        if (e.button === 2 || e.button === 1) {
+          const wasShortRight = e.button === 2 && !state.dragMoved;
+          state.dragging = false;
+          if (wasShortRight && state.mode === 'PLAYING') {
+            if (state.cableFromId !== null) {
+              state.cableFromId = null;
+              audio.click();
+            } else if (state.tool !== 'INSPECT') {
+              setTool('INSPECT');
+              audio.click();
+            } else {
+              closeInspector();
+            }
+          }
+        }
+      });
+
+      canvas.addEventListener('wheel', (e) => {
+        if (state.mode !== 'PLAYING') return;
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.13 : 0.88;
+        state.cam.targetZoom = clamp(state.cam.targetZoom * factor, 0.55, 2.25);
+      }, { passive: false });
+
+      // Tactile (tap pour poser/inspecter, glisser pour déplacer)
+      let touchStart = null;
+      let touchDragged = false;
+      canvas.addEventListener('touchstart', (e) => {
+        if (state.mode !== 'PLAYING' || e.touches.length !== 1) return;
+        const t = e.touches[0];
+        touchStart = { x: t.clientX, y: t.clientY };
+        state.camStart = { x: state.cam.x, y: state.cam.y };
+        touchDragged = false;
+      }, { passive: true });
+
+      canvas.addEventListener('touchmove', (e) => {
+        if (state.mode !== 'PLAYING' || e.touches.length !== 1 || !touchStart) return;
+        const t = e.touches[0];
+        const dx = t.clientX - touchStart.x;
+        const dy = t.clientY - touchStart.y;
+        if (Math.hypot(dx, dy) > 10) touchDragged = true;
+        if (touchDragged) {
+          state.cam.x = state.camStart.x - dx / state.cam.zoom;
+          state.cam.y = state.camStart.y - dy / state.cam.zoom;
+          clampCamera();
+        }
+      }, { passive: true });
+
+      canvas.addEventListener('touchend', () => {
+        if (state.mode !== 'PLAYING' || !touchStart) return;
+        if (!touchDragged) handleCanvasLeftClick(touchStart.x, touchStart.y);
+        touchStart = null;
+        touchDragged = false;
+      });
+
+      // Minimap interactive
+      let miniDrag = false;
+      function jumpMinimap(e) {
+        const rect = miniCanvas.getBoundingClientRect();
+        const rx = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+        const ry = clamp((e.clientY - rect.top) / rect.height, 0, 1);
+        state.cam.x = rx * state.cols * TILE_SIZE;
+        state.cam.y = ry * state.rows * TILE_SIZE;
+        clampCamera();
+      }
+      miniCanvas.addEventListener('mousedown', (e) => { e.stopPropagation(); miniDrag = true; jumpMinimap(e); });
+      window.addEventListener('mousemove', (e) => { if (miniDrag) jumpMinimap(e); });
+      window.addEventListener('mouseup', () => { miniDrag = false; });
+
+      function cycleSpeed() {
+        audio.click();
+        state.speed = state.speed === 1 ? 2 : (state.speed === 2 ? 3 : 1);
+        document.getElementById('btnSpeed').textContent = `x${state.speed}`;
+      }
+
+      // Clavier complet
+      window.addEventListener('keydown', (e) => {
+        state.keys[e.code] = true;
+
+        if (e.code === 'Escape') {
+          if (helpOverlay.classList.contains('open')) {
+            helpOverlay.classList.remove('open');
+            return;
+          }
+          if (state.mode === 'PLAYING') { audio.click(); setGameMode('PAUSED'); }
+          else if (state.mode === 'PAUSED') { audio.click(); setGameMode('PLAYING'); }
+          return;
+        }
+
+        if (state.mode !== 'PLAYING') return;
+
+        if (e.code === 'Space') {
+          e.preventDefault();
+          cycleSpeed();
+          return;
+        }
+
+        const digitMatch = e.code.match(/^(Digit|Numpad)([1-9])$/);
+        if (digitMatch) {
+          const idx = parseInt(digitMatch[2], 10) - 1;
+          if (TOOLS[idx]) { audio.click(); setTool(TOOLS[idx].id); }
+        } else if (e.code === 'KeyC') {
+          audio.click();
+          setTool('CABLE');
+        } else if (e.code === 'KeyX') {
+          audio.click();
+          setTool('SELL');
+        } else if (e.code === 'KeyR') {
+          state.rotation = (state.rotation + 1) % 4;
+          audio.click();
+          showAlert(`Orientation : ${state.rotation * 90}°`, 'parchment', 900);
+        }
+      });
+
+      window.addEventListener('keyup', (e) => {
+        state.keys[e.code] = false;
+      });
+
+      // -----------------------------------------------------------------------
+      // 15. BRANCHEMENT DES BOUTONS UI
+      // -----------------------------------------------------------------------
+      document.querySelectorAll('.valley-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          audio.click();
+          initMap(parseInt(card.dataset.preset, 10), true);
+        });
+      });
+
+      document.getElementById('btnOpenHelpMain').addEventListener('click', () => { audio.click(); helpOverlay.classList.add('open'); });
+      document.getElementById('btnHelpHud').addEventListener('click', () => { audio.click(); helpOverlay.classList.add('open'); });
+      document.getElementById('btnHelpPause').addEventListener('click', () => { audio.click(); helpOverlay.classList.add('open'); });
+      document.getElementById('btnCloseHelp').addEventListener('click', () => { audio.click(); helpOverlay.classList.remove('open'); });
+
+      document.getElementById('btnSpeed').addEventListener('click', cycleSpeed);
+
+      document.getElementById('btnSound').addEventListener('click', (e) => {
+        audio.enabled = !audio.enabled;
+        const btn = e.currentTarget;
+        btn.textContent = audio.enabled ? '🔊' : '🔇';
+        btn.classList.toggle('active', audio.enabled);
+        if (audio.enabled) audio.click();
+      });
+
+      btnAutoLink.addEventListener('click', () => {
+        state.autoLink = !state.autoLink;
+        audio.click();
+        btnAutoLink.textContent = `Auto-câble : ${state.autoLink ? 'OUI' : 'NON'}`;
+        btnAutoLink.classList.toggle('leaf', state.autoLink);
+      });
+
+      document.getElementById('btnPause').addEventListener('click', () => { audio.click(); setGameMode('PAUSED'); });
+      document.getElementById('btnResume').addEventListener('click', () => { audio.click(); setGameMode('PLAYING'); });
+      document.getElementById('btnRestartPause').addEventListener('click', () => { audio.click(); initMap(state.presetIndex, true); });
+      document.getElementById('btnBackMainPause').addEventListener('click', () => { audio.click(); initMap(state.presetIndex, false); });
+
+      document.getElementById('btnContinueEndless').addEventListener('click', () => {
+        audio.click();
+        state.endlessMode = true;
+        setGameMode('PLAYING');
+        showAlert('Mode infini activé — développez votre vallée écologique librement !', 'leaf', 3800);
+      });
+      document.getElementById('btnVictoryMenu').addEventListener('click', () => { audio.click(); initMap(state.presetIndex, false); });
+      document.getElementById('btnReplayGameover').addEventListener('click', () => { audio.click(); initMap(state.presetIndex, true); });
+      document.getElementById('btnGameoverMenu').addEventListener('click', () => { audio.click(); initMap(state.presetIndex, false); });
+
+      document.getElementById('btnCloseInspector').addEventListener('click', () => { audio.click(); closeInspector(); });
+      document.getElementById('btnRotateTool').addEventListener('click', () => {
+        state.rotation = (state.rotation + 1) % 4;
+        audio.click();
+        showAlert(`Orientation : ${state.rotation * 90}°`, 'parchment', 900);
+      });
+      document.getElementById('btnZoomIn').addEventListener('click', () => {
+        state.cam.targetZoom = clamp(state.cam.targetZoom * 1.2, 0.55, 2.25);
+      });
+      document.getElementById('btnZoomOut').addEventListener('click', () => {
+        state.cam.targetZoom = clamp(state.cam.targetZoom * 0.82, 0.55, 2.25);
+      });
+
+      window.addEventListener('resize', resizeCanvas);
+
+      // -----------------------------------------------------------------------
+      // 16. DÉMARRAGE AU CHARGEMENT DE LA FENÊTRE
+      // -----------------------------------------------------------------------
+      window.onload = function () {
+        resizeCanvas();
+        buildAllNatureArt();
+        buildDockUI();
+        initMap(0, false);
+        requestAnimationFrame(gameLoop);
+      };
+    })();
+  </script>
+</body>
+</html>
